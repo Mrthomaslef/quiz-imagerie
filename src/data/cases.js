@@ -1,3 +1,5 @@
+import { COTTEN_DIAGNOSIS_INDEX } from './cottenIndex.js';
+
 export const REGIONS = [
   { id: 'all', title: 'Toutes régions', shortTitle: 'Toutes', logo: null },
   { id: 'epaule', title: 'Épaule', shortTitle: 'Épaule', logo: './theme-logos/epaule.png' },
@@ -18,8 +20,9 @@ export const MODALITIES = [
   'Échographie',
 ];
 
-// Référentiel de diagnostics ostéo-articulaires pour l'autocomplétion (incluant les diagnostics des cas + diagnostics différentiels classiques)
+// Référentiel complet de diagnostics ostéo-articulaires du Cotten (36 chapitres) + classiques pour l'autocomplétion
 export const DIAGNOSIS_DICTIONARY = [
+  ...COTTEN_DIAGNOSIS_INDEX,
   'Complexe de Buford',
   'Foramen sous-labral',
   'Lésion de Bankart osseuse',

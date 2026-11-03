@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { REGIONS, MODALITIES } from '../data/cases.js';
+import { getAutocompleteSuggestions } from '../data/matcher.js';
 import {
   compressImageFile,
   deleteCase,
@@ -38,8 +39,11 @@ export default function CaseStudioPage({
   const [dragging, setDragging] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [showManageList, setShowManageList] = useState(false);
+  const [showDiagSuggestions, setShowDiagSuggestions] = useState(false);
+  const [activeSugIdx, setActiveSugIdx] = useState(-1);
 
   const fileInputRef = useRef(null);
+  const diagWrapRef = useRef(null);
 
   useEffect(() => {
     if (initialCaseToEdit) {
@@ -69,6 +73,21 @@ export default function CaseStudioPage({
     return () => window.removeEventListener('paste', onPaste);
   }, []);
 
+  useEffect(() => {
+    const onClickOutside = (e) => {
+      if (diagWrapRef.current && !diagWrapRef.current.contains(e.target)) {
+        setShowDiagSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, []);
+
+  const diagSuggestions = useMemo(() => {
+    if (!showDiagSuggestions) return [];
+    return getAutocompleteSuggestions(form.diagnosis, allCases, 6);
+  }, [form.diagnosis, showDiagSuggestions, allCases]);
+
   const updateField = (key, val) => {
     setForm((prev) => ({ ...prev, [key]: val }));
   };
@@ -90,6 +109,7 @@ export default function CaseStudioPage({
   const handleSave = (e) => {
     e.preventDefault();
     setFeedback(null);
+    setShowDiagSuggestions(false);
     try {
       const existing = form.id ? allCases.find((c) => c.id === form.id) : null;
       const saved = saveCase({
@@ -150,12 +170,10 @@ export default function CaseStudioPage({
         </div>
       )}
 
-      <form onSubmit={handleSave} className="propose-card">
+      <form onSubmit={handleSave} className="propose-card" autoComplete="off">
         {/* 1. IMAGE */}
         <div className="propose-step">
-          <label className="propose-label">
-            1. Image *
-          </label>
+          <label className="propose-label">1. Image *</label>
 
           <div
             className={`image-dropzone ${dragging ? 'is-dragging' : ''} ${
@@ -256,20 +274,67 @@ export default function CaseStudioPage({
           </div>
         </div>
 
-        {/* 4. LA RÉPONSE */}
-        <div className="propose-step">
+        {/* 4. LA RÉPONSE (with Cotten Index Autocomplete) */}
+        <div className="propose-step" ref={diagWrapRef}>
           <label htmlFor="propose-diag" className="propose-label">
-            4. La réponse (Diagnostic) *
+            4. La réponse (Diagnostic) *{' '}
+            <span className="propose-optional">(autocomplétion Cotten)</span>
           </label>
-          <input
-            id="propose-diag"
-            type="text"
-            className="text-input"
-            placeholder="Ex. Rupture du supra-épineux, Complexe de Buford…"
-            value={form.diagnosis}
-            onChange={(e) => updateField('diagnosis', e.target.value)}
-            required
-          />
+          <div className="autocomplete-wrap">
+            <input
+              id="propose-diag"
+              type="text"
+              className="text-input"
+              placeholder="Ex. Rupture du supra-épineux, Maladie de Kienböck…"
+              value={form.diagnosis}
+              onChange={(e) => {
+                updateField('diagnosis', e.target.value);
+                setShowDiagSuggestions(true);
+                setActiveSugIdx(-1);
+              }}
+              onFocus={() => setShowDiagSuggestions(true)}
+              onKeyDown={(e) => {
+                if (!diagSuggestions.length) return;
+                if (e.key === 'ArrowDown') {
+                  e.preventDefault();
+                  setActiveSugIdx((idx) => (idx + 1) % diagSuggestions.length);
+                } else if (e.key === 'ArrowUp') {
+                  e.preventDefault();
+                  setActiveSugIdx((idx) =>
+                    idx <= 0 ? diagSuggestions.length - 1 : idx - 1
+                  );
+                } else if (e.key === 'Enter' && activeSugIdx >= 0) {
+                  e.preventDefault();
+                  updateField('diagnosis', diagSuggestions[activeSugIdx]);
+                  setShowDiagSuggestions(false);
+                } else if (e.key === 'Escape') {
+                  setShowDiagSuggestions(false);
+                }
+              }}
+              required
+            />
+
+            {diagSuggestions.length > 0 && (
+              <ul className="autocomplete-list" role="listbox">
+                {diagSuggestions.map((sug, i) => (
+                  <li
+                    key={sug}
+                    role="option"
+                    aria-selected={i === activeSugIdx}
+                    className={`autocomplete-item ${i === activeSugIdx ? 'is-active' : ''}`}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      updateField('diagnosis', sug);
+                      setShowDiagSuggestions(false);
+                    }}
+                  >
+                    <span className="autocomplete-icon">⌕</span>
+                    <span>{sug}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
 
         {/* 5. ÉNONCÉ (Optionnel) */}
