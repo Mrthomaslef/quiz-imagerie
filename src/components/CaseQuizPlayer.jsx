@@ -11,12 +11,6 @@ import {
   clearCaseAttempt,
 } from '../data/storage.js';
 
-const DIFFICULTY_LABELS = {
-  1: { label: 'Classique', stars: '★☆☆', cls: 'diff-1' },
-  2: { label: 'Intermédiaire', stars: '★★☆', cls: 'diff-2' },
-  3: { label: 'Expert', stars: '★★★', cls: 'diff-3' },
-};
-
 function buildQcmOptions(caseItem) {
   const correct = caseItem.diagnosis;
   const pool =
@@ -25,7 +19,6 @@ function buildQcmOptions(caseItem) {
       : DIAGNOSIS_DICTIONARY.filter((d) => d !== correct).slice(0, 3);
 
   const items = [correct, ...pool];
-  // Deterministic shuffle based on case id
   let seed = 0;
   for (let i = 0; i < caseItem.id.length; i++) {
     seed = (seed * 31 + caseItem.id.charCodeAt(i)) >>> 0;
@@ -45,22 +38,24 @@ export default function CaseQuizPlayer({
   totalCases,
   onPrev,
   onNext,
+  onBackHome,
   onEditCase,
+  activeFilterLabel,
 }) {
   const [inputVal, setInputVal] = useState('');
   const [activeSuggestionIdx, setActiveSuggestionIdx] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [qcmMode, setQcmMode] = useState(false);
-  const [result, setResult] = useState(null); // { status: 'exact'|'partial'|'wrong'|'revealed', title, detail, userAnswer }
+  const [result, setResult] = useState(null);
   const [showCorrection, setShowCorrection] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [corrLightbox, setCorrLightbox] = useState(false);
 
   const inputRef = useRef(null);
   const suggestionsWrapRef = useRef(null);
+  const correctionRef = useRef(null);
 
-  // Sync state when caseItem changes
   useEffect(() => {
     if (!caseItem) return;
     const prog = readProgress()[caseItem.id];
@@ -99,7 +94,7 @@ export default function CaseQuizPlayer({
 
   const suggestions = useMemo(() => {
     if (!showSuggestions || showCorrection) return [];
-    return getAutocompleteSuggestions(inputVal, allCases, 6);
+    return getAutocompleteSuggestions(inputVal, allCases, 5);
   }, [inputVal, showSuggestions, showCorrection, allCases]);
 
   const qcmOptions = useMemo(() => {
@@ -120,7 +115,7 @@ export default function CaseQuizPlayer({
   if (!caseItem) return null;
 
   const regionObj = REGIONS.find((r) => r.id === caseItem.region) || REGIONS[1];
-  const diffObj = DIFFICULTY_LABELS[caseItem.difficulty] || DIFFICULTY_LABELS[2];
+  const progressPct = totalCases > 0 ? Math.round(((caseIndex + 1) / totalCases) * 100) : 100;
 
   const submitAnswer = (rawText) => {
     const clean = String(rawText ?? inputVal).trim();
@@ -196,379 +191,369 @@ export default function CaseQuizPlayer({
     setBookmarked(next);
   };
 
+  const goNext = () => {
+    if (!onNext) return;
+    onNext();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goPrev = () => {
+    if (!onPrev) return;
+    onPrev();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <motion.section
+    <motion.div
       key={caseItem.id}
-      className="case-player-card"
-      initial={{ opacity: 0, y: 10 }}
+      className="single-question-page"
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22 }}
+      transition={{ duration: 0.2 }}
     >
-      {/* Top Meta Bar */}
-      <div className="case-meta-bar">
-        <div className="case-meta-left">
-          <span className="case-index-badge">
-            Cas {caseIndex + 1}/{totalCases}
-          </span>
-          <span className="case-region-chip">
-            {regionObj.logo && <img src={regionObj.logo} alt="" className="chip-region-icon" />}
-            {regionObj.shortTitle}
-          </span>
-          <span className="case-modality-chip">{caseItem.modality}</span>
-          <span className={`case-diff-chip ${diffObj.cls}`} title={`Niveau : ${diffObj.label}`}>
-            {diffObj.stars} <span className="hide-xs">{diffObj.label}</span>
-          </span>
+      {/* Top Question Header Bar */}
+      <div className="question-top-bar">
+        <button
+          type="button"
+          className="back-home-btn"
+          onClick={onBackHome}
+        >
+          ← Accueil
+        </button>
+
+        <div className="question-progress-center">
+          <div className="question-progress-label">
+            <strong>
+              Question {caseIndex + 1} / {totalCases}
+            </strong>
+            {activeFilterLabel && <span>· {activeFilterLabel}</span>}
+          </div>
+          <div className="question-progress-track">
+            <div
+              className="question-progress-fill"
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
         </div>
 
-        <div className="case-meta-right">
+        <div className="question-top-actions">
           <button
             type="button"
-            className={`icon-action-btn ${bookmarked ? 'is-bookmarked' : ''}`}
+            className={`fav-icon-btn ${bookmarked ? 'is-bookmarked' : ''}`}
             onClick={handleToggleBookmark}
             title={bookmarked ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           >
-            {bookmarked ? '★ Favori' : '☆ Favori'}
+            {bookmarked ? '★' : '☆'}
           </button>
           {onEditCase && (
             <button
               type="button"
-              className="icon-action-btn"
+              className="fav-icon-btn"
               onClick={() => onEditCase(caseItem)}
-              title="Modifier ce cas dans le Studio"
+              title="Modifier ce cas"
             >
-              ✏️ Éditer
+              ✏️
             </button>
           )}
         </div>
       </div>
 
-      {/* Main Split or Stacked Layout: Image on Left/Top, Quiz Interaction on Right/Bottom */}
-      <div className="case-player-grid">
-        {/* Left column: Radiology Image Viewer */}
-        <div className="case-image-col">
-          <ImageViewer
-            src={caseItem.image}
-            alt={caseItem.clinicalContext || 'Imagerie du cas'}
-            badgeText={caseItem.modality}
-          />
+      {/* Main Question Card */}
+      <section className="case-player-card">
+        {/* Badges Row */}
+        <div className="question-badges-row">
+          <span className="case-region-chip">
+            {regionObj.logo && <img src={regionObj.logo} alt="" className="chip-region-icon" />}
+            {regionObj.shortTitle}
+          </span>
+          <span className="case-modality-chip">{caseItem.modality}</span>
         </div>
 
-        {/* Right column: Clinical Context + Free Diagnosis Input + Correction */}
-        <div className="case-interaction-col">
-          <div className="clinical-context-box">
-            <div className="clinical-context-label">Contexte clinique & Question</div>
-            <p className="clinical-context-text">{caseItem.clinicalContext}</p>
+        <div className="case-player-grid">
+          {/* 1. Radiology Image */}
+          <div className="case-image-col">
+            <ImageViewer
+              src={caseItem.image}
+              alt={caseItem.clinicalContext || 'Imagerie du cas'}
+              badgeText={caseItem.modality}
+            />
           </div>
 
-          {/* Hint Box if toggled */}
-          <AnimatePresence>
-            {showHint && caseItem.hint && (
-              <motion.div
-                className="hint-banner"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-              >
-                <strong>💡 Indice sémiologique :</strong> {caseItem.hint}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* 2. Clinical Prompt + Answer Input / Correction */}
+          <div className="case-interaction-col">
+            <div className="clinical-context-box">
+              <div className="clinical-context-label">Cas clinique</div>
+              <p className="clinical-context-text">{caseItem.clinicalContext}</p>
+            </div>
 
-          {/* Diagnosis Input or QCM Helper */}
-          {!showCorrection && (
-            <div className="diagnosis-input-section" ref={suggestionsWrapRef}>
-              {!qcmMode ? (
-                <form onSubmit={handleFormSubmit} className="diagnosis-form" autoComplete="off">
-                  <label htmlFor="diag-input" className="diagnosis-label">
-                    Quel est votre diagnostic ?
-                    <span className="diagnosis-label-sub">
-                      Saisie libre (synonymes & mots-clés acceptés) ou autocomplétion
-                    </span>
-                  </label>
-
-                  <div className="diagnosis-input-row">
-                    <div className="autocomplete-wrap">
-                      <input
-                        id="diag-input"
-                        ref={inputRef}
-                        type="text"
-                        className="diagnosis-text-input"
-                        placeholder="Ex. Complexe de Buford, Rupture du supra-épineux…"
-                        value={inputVal}
-                        onChange={(e) => {
-                          setInputVal(e.target.value);
-                          setShowSuggestions(true);
-                          setActiveSuggestionIdx(-1);
-                        }}
-                        onFocus={() => setShowSuggestions(true)}
-                        onKeyDown={handleKeyDown}
-                      />
-
-                      {suggestions.length > 0 && (
-                        <ul className="autocomplete-list" role="listbox">
-                          {suggestions.map((sug, i) => (
-                            <li
-                              key={sug}
-                              role="option"
-                              aria-selected={i === activeSuggestionIdx}
-                              className={`autocomplete-item ${
-                                i === activeSuggestionIdx ? 'is-active' : ''
-                              }`}
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                setInputVal(sug);
-                                setShowSuggestions(false);
-                                submitAnswer(sug);
-                              }}
-                            >
-                              <span className="autocomplete-icon">⌕</span>
-                              <span>{sug}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="btn btn-primary diagnosis-submit-btn"
-                      disabled={!inputVal.trim()}
-                    >
-                      Valider
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                <div className="qcm-helper-box">
-                  <div className="qcm-helper-head">
-                    <span>🎯 Mode QCM (4 propositions)</span>
-                    <button
-                      type="button"
-                      className="link-btn"
-                      onClick={() => setQcmMode(false)}
-                    >
-                      Revenir à la saisie libre
-                    </button>
-                  </div>
-                  <div className="qcm-options-grid">
-                    {qcmOptions.map((opt, idx) => (
-                      <button
-                        key={opt}
-                        type="button"
-                        className="qcm-option-btn"
-                        onClick={() => {
-                          setInputVal(opt);
-                          submitAnswer(opt);
-                        }}
-                      >
-                        <span className="qcm-letter">{String.fromCharCode(65 + idx)}</span>
-                        <span>{opt}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+            <AnimatePresence>
+              {showHint && caseItem.hint && (
+                <motion.div
+                  className="hint-banner"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                  <strong>💡 Indice :</strong> {caseItem.hint}
+                </motion.div>
               )}
+            </AnimatePresence>
 
-              {/* Intermediate feedback if partial or wrong before revealing full correction */}
-              {result && (result.status === 'partial' || result.status === 'wrong') && (
-                <div className={`attempt-feedback-box is-${result.status}`}>
-                  <div className="attempt-feedback-head">
-                    <strong>
-                      {result.status === 'partial' ? '🟠 ' : '🔴 '}
-                      {result.title}
-                    </strong>
-                    <span>Votre réponse : « {result.userAnswer} »</span>
+            {!showCorrection ? (
+              <div className="diagnosis-input-section" ref={suggestionsWrapRef}>
+                {!qcmMode ? (
+                  <form onSubmit={handleFormSubmit} className="diagnosis-form" autoComplete="off">
+                    <label htmlFor="diag-input" className="diagnosis-label">
+                      Votre diagnostic :
+                    </label>
+
+                    <div className="diagnosis-input-row">
+                      <div className="autocomplete-wrap">
+                        <input
+                          id="diag-input"
+                          ref={inputRef}
+                          type="text"
+                          className="diagnosis-text-input"
+                          placeholder="Tapez le diagnostic (ex. Buford, Rupture coiffe…)"
+                          value={inputVal}
+                          onChange={(e) => {
+                            setInputVal(e.target.value);
+                            setShowSuggestions(true);
+                            setActiveSuggestionIdx(-1);
+                          }}
+                          onFocus={() => setShowSuggestions(true)}
+                          onKeyDown={handleKeyDown}
+                        />
+
+                        {suggestions.length > 0 && (
+                          <ul className="autocomplete-list" role="listbox">
+                            {suggestions.map((sug, i) => (
+                              <li
+                                key={sug}
+                                role="option"
+                                aria-selected={i === activeSuggestionIdx}
+                                className={`autocomplete-item ${
+                                  i === activeSuggestionIdx ? 'is-active' : ''
+                                }`}
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  setInputVal(sug);
+                                  setShowSuggestions(false);
+                                  submitAnswer(sug);
+                                }}
+                              >
+                                <span className="autocomplete-icon">⌕</span>
+                                <span>{sug}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="btn btn-primary diagnosis-submit-btn"
+                        disabled={!inputVal.trim()}
+                      >
+                        Valider
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="qcm-helper-box">
+                    <div className="qcm-helper-head">
+                      <span>🎯 Choisissez parmi les 4 propositions</span>
+                      <button
+                        type="button"
+                        className="link-btn"
+                        onClick={() => setQcmMode(false)}
+                      >
+                        Saisie libre
+                      </button>
+                    </div>
+                    <div className="qcm-options-grid">
+                      {qcmOptions.map((opt, idx) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          className="qcm-option-btn"
+                          onClick={() => {
+                            setInputVal(opt);
+                            submitAnswer(opt);
+                          }}
+                        >
+                          <span className="qcm-letter">{String.fromCharCode(65 + idx)}</span>
+                          <span>{opt}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <p className="attempt-feedback-detail">
-                    {result.status === 'partial'
-                      ? 'Vous avez identifié une partie du diagnostic ! Vous pouvez affiner votre réponse ci-dessus ou afficher directement la correction complète.'
-                      : 'Ce n’est pas le diagnostic attendu. Essayez une autre hypothèse, utilisez un indice, ou affichez la correction.'}
-                  </p>
-                  <div className="attempt-feedback-actions">
+                )}
+
+                {/* Feedback when partial or wrong */}
+                {result && (result.status === 'partial' || result.status === 'wrong') && (
+                  <div className={`attempt-feedback-box is-${result.status}`}>
+                    <div className="attempt-feedback-head">
+                      <strong>
+                        {result.status === 'partial' ? '🟠 ' : '🔴 '}
+                        {result.title}
+                      </strong>
+                      <span>« {result.userAnswer} »</span>
+                    </div>
+                    <p className="attempt-feedback-detail">
+                      {result.status === 'partial'
+                        ? 'Vous êtes très proche ! Précisez votre réponse ou affichez la correction.'
+                        : 'Essayez une autre hypothèse, utilisez l’aide 4 choix, ou affichez la réponse.'}
+                    </p>
                     <button
                       type="button"
                       className="btn btn-primary btn-small"
                       onClick={() => setShowCorrection(true)}
                     >
-                      Voir la réponse & l’explication →
+                      Afficher la réponse complète →
                     </button>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Helper Tools Row */}
-              <div className="quiz-helper-bar">
-                {caseItem.hint && (
+                {/* Helper Buttons */}
+                <div className="quiz-helper-bar">
+                  {caseItem.hint && (
+                    <button
+                      type="button"
+                      className={`helper-pill-btn ${showHint ? 'is-active' : ''}`}
+                      onClick={() => setShowHint((v) => !v)}
+                    >
+                      💡 {showHint ? 'Masquer l’indice' : 'Indice'}
+                    </button>
+                  )}
                   <button
                     type="button"
-                    className={`helper-pill-btn ${showHint ? 'is-active' : ''}`}
-                    onClick={() => setShowHint((v) => !v)}
+                    className={`helper-pill-btn ${qcmMode ? 'is-active' : ''}`}
+                    onClick={() => setQcmMode((v) => !v)}
                   >
-                    💡 {showHint ? 'Masquer l’indice' : 'Indice'}
+                    🎯 {qcmMode ? 'Mode texte' : 'Aide 4 choix'}
                   </button>
-                )}
-                <button
-                  type="button"
-                  className={`helper-pill-btn ${qcmMode ? 'is-active' : ''}`}
-                  onClick={() => setQcmMode((v) => !v)}
-                >
-                  🎯 {qcmMode ? 'Saisie libre' : 'Aide 4 choix'}
-                </button>
-                <button
-                  type="button"
-                  className="helper-pill-btn helper-reveal-btn"
-                  onClick={handleRevealDiagnosis}
-                >
-                  👁️ Voir la réponse
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Full Correction & Semiological Explanation Panel */}
-          {showCorrection && (
-            <motion.div
-              className="correction-panel"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <div className={`correction-status-banner is-${result?.status || 'revealed'}`}>
-                <div className="correction-status-icon">
-                  {result?.status === 'exact'
-                    ? '✓'
-                    : result?.status === 'partial'
-                    ? '≈'
-                    : 'ℹ'}
+                  <button
+                    type="button"
+                    className="helper-pill-btn helper-reveal-btn"
+                    onClick={handleRevealDiagnosis}
+                  >
+                    👁️ Voir la réponse
+                  </button>
                 </div>
-                <div className="correction-status-body">
-                  <div className="correction-status-tag">
+              </div>
+            ) : (
+              /* Correction Panel */
+              <motion.div
+                ref={correctionRef}
+                className="correction-panel"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className={`correction-status-banner is-${result?.status || 'revealed'}`}>
+                  <div className="correction-status-icon">
                     {result?.status === 'exact'
-                      ? 'Diagnostic exact'
+                      ? '✓'
                       : result?.status === 'partial'
-                      ? 'Diagnostic partiellement validé'
-                      : 'Correction du cas'}
+                      ? '≈'
+                      : 'ℹ'}
                   </div>
-                  <h3 className="correction-diagnosis-title">{caseItem.diagnosis}</h3>
-                  {result?.userAnswer && (
-                    <p className="correction-user-answer">
-                      Votre saisie : <span>« {result.userAnswer} »</span>
-                    </p>
-                  )}
+                  <div className="correction-status-body">
+                    <div className="correction-status-tag">
+                      {result?.status === 'exact'
+                        ? 'Diagnostic exact'
+                        : result?.status === 'partial'
+                        ? 'Diagnostic partiellement validé'
+                        : 'Diagnostic attendu'}
+                    </div>
+                    <h3 className="correction-diagnosis-title">{caseItem.diagnosis}</h3>
+                    {result?.userAnswer && (
+                      <p className="correction-user-answer">
+                        Votre réponse : <span>« {result.userAnswer} »</span>
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {/* Key Semiological Signs */}
-              {Array.isArray(caseItem.keySigns) && caseItem.keySigns.length > 0 && (
-                <div className="correction-signs-box">
-                  <h4>Signes sémiologiques clés</h4>
-                  <ul className="correction-signs-list">
-                    {caseItem.keySigns.map((sign, i) => (
-                      <li key={i}>{sign}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                {Array.isArray(caseItem.keySigns) && caseItem.keySigns.length > 0 && (
+                  <div className="correction-signs-box">
+                    <h4>Signes clés à retenir</h4>
+                    <ul className="correction-signs-list">
+                      {caseItem.keySigns.map((sign, i) => (
+                        <li key={i}>{sign}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              {/* Detailed Explanation */}
-              {caseItem.explanation && (
-                <div className="correction-explanation-box">
-                  <h4>Explication & Points d’enseignement</h4>
-                  <p>{caseItem.explanation}</p>
-                </div>
-              )}
+                {caseItem.explanation && (
+                  <div className="correction-explanation-box">
+                    <h4>Explication</h4>
+                    <p>{caseItem.explanation}</p>
+                  </div>
+                )}
 
-              {/* Optional Correction Figure / Schema */}
-              {caseItem.correctionImage && (
-                <div className="correction-figure-box">
-                  <div className="correction-figure-head">
-                    <span>Schéma / Imagerie complémentaire</span>
-                    <button
-                      type="button"
-                      className="link-btn"
+                {caseItem.correctionImage && (
+                  <div className="correction-figure-box">
+                    <div className="correction-figure-head">
+                      <span>Schéma / Figure de correction</span>
+                      <button
+                        type="button"
+                        className="link-btn"
+                        onClick={() => setCorrLightbox(true)}
+                      >
+                        Agrandir ⛶
+                      </button>
+                    </div>
+                    <img
+                      src={caseItem.correctionImage}
+                      alt={caseItem.correctionCaption || 'Figure de correction'}
+                      className="correction-figure-img"
                       onClick={() => setCorrLightbox(true)}
-                    >
-                      Agrandir ⛶
-                    </button>
+                    />
+                    {caseItem.correctionCaption && (
+                      <p className="correction-figure-caption">{caseItem.correctionCaption}</p>
+                    )}
                   </div>
-                  <img
-                    src={caseItem.correctionImage}
-                    alt={caseItem.correctionCaption || 'Figure de correction'}
-                    className="correction-figure-img"
-                    onClick={() => setCorrLightbox(true)}
-                  />
-                  {caseItem.correctionCaption && (
-                    <p className="correction-figure-caption">{caseItem.correctionCaption}</p>
-                  )}
-                </div>
-              )}
+                )}
 
-              {/* Accepted Synonyms Info */}
-              {Array.isArray(caseItem.synonyms) && caseItem.synonyms.length > 1 && (
-                <div className="correction-synonyms-line">
-                  <span>Termes acceptés :</span>{' '}
-                  {caseItem.synonyms.join(' · ')}
+                <div className="correction-retry-row">
+                  <button
+                    type="button"
+                    className="link-btn"
+                    onClick={handleResetCurrentCase}
+                  >
+                    ↺ Refaire cette question
+                  </button>
                 </div>
-              )}
-
-              {/* Footer Navigation inside Correction */}
-              <div className="correction-nav-actions">
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-small"
-                  onClick={handleResetCurrentCase}
-                >
-                  ↺ Refaire ce cas
-                </button>
-                <div className="correction-nav-right">
-                  {onPrev && (
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-small"
-                      onClick={onPrev}
-                    >
-                      ← Précédent
-                    </button>
-                  )}
-                  {onNext && (
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={onNext}
-                    >
-                      Cas suivant →
-                    </button>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          )}
+              </motion.div>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Bottom Case Switcher Strip */}
-      <div className="case-QuickNav-footer">
-        <button
-          type="button"
-          className="btn btn-ghost btn-small"
-          onClick={onPrev}
-          disabled={!onPrev}
-        >
-          ← Cas précédent
-        </button>
-        <span className="case-quicknav-center">
-          {caseItem.id.toUpperCase()} · {regionObj.shortTitle} · {caseItem.modality}
-        </span>
-        <button
-          type="button"
-          className="btn btn-ghost btn-small"
-          onClick={onNext}
-          disabled={!onNext}
-        >
-          Cas suivant →
-        </button>
-      </div>
+        {/* Prominent Bottom Navigation Bar ("Suivant en bas") */}
+        <div className="question-bottom-action-bar">
+          <button
+            type="button"
+            className="btn btn-ghost question-prev-btn"
+            onClick={goPrev}
+            disabled={!onPrev}
+          >
+            ← Précédent
+          </button>
 
-      {/* Lightbox for Correction Figure */}
+          <button
+            type="button"
+            className="btn btn-primary question-next-btn"
+            onClick={goNext}
+            disabled={!onNext}
+          >
+            <span>Question suivante</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </section>
+
       {corrLightbox && caseItem.correctionImage && (
         <div
           className="pacs-lightbox-backdrop"
@@ -595,6 +580,6 @@ export default function CaseQuizPlayer({
           </div>
         </div>
       )}
-    </motion.section>
+    </motion.div>
   );
 }

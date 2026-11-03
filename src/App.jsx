@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Navbar from './components/Navbar.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import Footer from './components/Footer.jsx';
 import CaseFeedPage from './components/CaseFeedPage.jsx';
+import CaseQuizPlayer from './components/CaseQuizPlayer.jsx';
 import CaseStudioPage from './components/CaseStudioPage.jsx';
 import ProgressPage from './components/ProgressPage.jsx';
 import {
@@ -22,9 +23,9 @@ function parseHash() {
   }
   const mCas = h.match(/^#\/cas\/([\w-]+)$/);
   if (mCas) {
-    return { route: 'feed', caseId: mCas[1] };
+    return { route: 'quiz', caseId: mCas[1] };
   }
-  return { route: 'feed', caseId: null };
+  return { route: 'home', caseId: null };
 }
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
   const [allCases, setAllCases] = useState(() => getAllCases());
   const [progress, setProgress] = useState(() => readProgress());
   const [bookmarks, setBookmarks] = useState(() => readBookmarks());
+  const [activeModality, setActiveModality] = useState('Toutes');
   const [selectedCaseId, setSelectedCaseId] = useState(() => {
     const initial = parseHash().caseId;
     const list = getAllCases();
@@ -55,26 +57,40 @@ export default function App() {
       if (parsed.caseId) {
         setSelectedCaseId(parsed.caseId);
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const handleSelectCaseId = (id) => {
-    setSelectedCaseId(id);
+  const quizDeck = useMemo(() => {
+    if (!activeModality || activeModality === 'Toutes') return allCases;
+    const filtered = allCases.filter((c) => c.modality === activeModality);
+    return filtered.length > 0 ? filtered : allCases;
+  }, [allCases, activeModality]);
+
+  const currentIdx = useMemo(() => {
+    if (!quizDeck.length) return -1;
+    const idx = quizDeck.findIndex((c) => c.id === selectedCaseId);
+    return idx >= 0 ? idx : 0;
+  }, [quizDeck, selectedCaseId]);
+
+  const currentCase = currentIdx >= 0 ? quizDeck[currentIdx] : null;
+
+  const handleStartQuiz = (caseId, modality = 'Toutes') => {
+    setActiveModality(modality);
+    setSelectedCaseId(caseId);
+    window.location.hash = `#/cas/${caseId}`;
   };
 
   const handleRandomCase = () => {
     if (!allCases.length) return;
+    setActiveModality('Toutes');
     const unanswered = allCases.filter((c) => !progress[c.id]?.status);
     const pool = unanswered.length > 0 ? unanswered : allCases;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     setSelectedCaseId(pick.id);
-    if (navState.route !== 'feed' && navState.route !== 'quiz') {
-      window.location.hash = `#/cas/${pick.id}`;
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.location.hash = `#/cas/${pick.id}`;
   };
 
   const handleEditCase = (caseObj) => {
@@ -83,9 +99,29 @@ export default function App() {
   };
 
   const handleOpenCaseInQuiz = (id) => {
+    setActiveModality('Toutes');
     setSelectedCaseId(id);
     window.location.hash = `#/cas/${id}`;
   };
+
+  const handlePrevQuestion =
+    currentIdx > 0
+      ? () => {
+          const prev = quizDeck[currentIdx - 1];
+          setSelectedCaseId(prev.id);
+          window.location.hash = `#/cas/${prev.id}`;
+        }
+      : null;
+
+  const handleNextQuestion =
+    quizDeck.length > 1
+      ? () => {
+          const nextIdx = (currentIdx + 1) % quizDeck.length;
+          const next = quizDeck[nextIdx];
+          setSelectedCaseId(next.id);
+          window.location.hash = `#/cas/${next.id}`;
+        }
+      : null;
 
   return (
     <>
@@ -107,16 +143,27 @@ export default function App() {
             bookmarks={bookmarks}
             onOpenCaseInQuiz={handleOpenCaseInQuiz}
           />
+        ) : navState.route === 'quiz' && currentCase ? (
+          <CaseQuizPlayer
+            caseItem={currentCase}
+            allCases={allCases}
+            caseIndex={currentIdx}
+            totalCases={quizDeck.length}
+            onPrev={handlePrevQuestion}
+            onNext={handleNextQuestion}
+            onBackHome={() => {
+              window.location.hash = '#/';
+            }}
+            onEditCase={handleEditCase}
+            activeFilterLabel={activeModality !== 'Toutes' ? activeModality : ''}
+          />
         ) : (
           <CaseFeedPage
-            key={navState.route === 'quiz' ? 'focus-quiz' : 'feed-split'}
             allCases={allCases}
             progress={progress}
             bookmarks={bookmarks}
-            selectedCaseId={selectedCaseId}
-            onSelectCaseId={handleSelectCaseId}
-            onEditCase={handleEditCase}
-            defaultViewMode={navState.route === 'quiz' ? 'player-only' : 'split'}
+            onStartQuiz={handleStartQuiz}
+            onStartRandom={handleRandomCase}
           />
         )}
       </main>
