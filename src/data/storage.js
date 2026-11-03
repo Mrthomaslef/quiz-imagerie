@@ -127,9 +127,7 @@ export function saveCase(caseData) {
     region: caseData.region || 'epaule',
     modality: caseData.modality || 'IRM',
     difficulty: Number(caseData.difficulty) || 2,
-    clinicalContext: String(
-      caseData.clinicalContext || 'Quel est votre diagnostic sur cette image ?'
-    ).trim(),
+    clinicalContext: String(caseData.clinicalContext || '').trim(),
     image: caseData.image || '',
     diagnosis: String(caseData.diagnosis || '').trim(),
     synonyms: cleanSynonyms.length ? cleanSynonyms : [String(caseData.diagnosis || '').trim()],

@@ -279,12 +279,14 @@ export default function CaseQuizPlayer({
             />
           </div>
 
-          {/* 2. Clinical Prompt + Answer Input / Correction */}
+          {/* 2. Clinical Prompt (optional) + Answer Input / Correction */}
           <div className="case-interaction-col">
-            <div className="clinical-context-box">
-              <div className="clinical-context-label">Cas clinique</div>
-              <p className="clinical-context-text">{caseItem.clinicalContext}</p>
-            </div>
+            {caseItem.clinicalContext && (
+              <div className="clinical-context-box">
+                <div className="clinical-context-label">Énoncé</div>
+                <p className="clinical-context-text">{caseItem.clinicalContext}</p>
+              </div>
+            )}
 
             <AnimatePresence>
               {showHint && caseItem.hint && (

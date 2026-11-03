@@ -1234,8 +1234,125 @@ h4 {
 }
 
 /* ==========================================
-   STUDIO & PROGRESS PAGES
+   SIMPLIFIED PROPOSE QUESTION PAGE (#/studio)
    ========================================== */
+.propose-simple-container {
+  max-width: 620px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.propose-head h1 {
+  font-size: 1.45rem;
+  margin-bottom: 4px;
+}
+
+.propose-head p {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.propose-card {
+  background: linear-gradient(180deg, rgba(14, 24, 38, 0.94), rgba(7, 13, 22, 0.97));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.4);
+}
+
+.propose-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.propose-label {
+  font-family: var(--display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.propose-optional {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.selectable-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+  gap: 8px;
+}
+
+.modality-pills-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.select-pill-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--line);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all 0.14s ease;
+}
+
+.select-pill-btn:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.select-pill-btn.is-selected {
+  background: rgba(56, 225, 255, 0.18);
+  border-color: var(--cyan);
+  color: #ffffff;
+  box-shadow: 0 0 0 1px var(--cyan);
+}
+
+.select-pill-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.propose-submit-row {
+  display: flex;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.propose-submit-btn {
+  flex: 1;
+  min-height: 52px;
+  font-size: 1.02rem;
+}
+
+.propose-manage-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.propose-manage-toggle {
+  width: 100%;
+  justify-content: center;
+}
+
 .studio-header,
 .progress-header {
   display: flex;
