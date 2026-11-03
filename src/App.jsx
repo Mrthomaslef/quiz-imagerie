@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Navbar from './components/Navbar.jsx';
 import BottomNav from './components/BottomNav.jsx';
-import Footer from './components/Footer.jsx';
 import CaseFeedPage from './components/CaseFeedPage.jsx';
 import CaseQuizPlayer from './components/CaseQuizPlayer.jsx';
 import CaseStudioPage from './components/CaseStudioPage.jsx';
@@ -15,7 +14,13 @@ import {
 
 function parseHash() {
   const h = window.location.hash || '#/';
-  if (h.startsWith('#/studio')) return { route: 'studio', caseId: null };
+  if (
+    h.startsWith('#/studio') ||
+    h.startsWith('#/proposer') ||
+    h.startsWith('#/ajouter')
+  ) {
+    return { route: 'studio', caseId: null };
+  }
   if (h.startsWith('#/progression')) return { route: 'progression', caseId: null };
   if (h.startsWith('#/quiz')) {
     const m = h.match(/^#\/quiz\/([\w-]+)$/);
@@ -34,6 +39,7 @@ export default function App() {
   const [progress, setProgress] = useState(() => readProgress());
   const [bookmarks, setBookmarks] = useState(() => readBookmarks());
   const [activeModality, setActiveModality] = useState('Toutes');
+  const [activeRegion, setActiveRegion] = useState('all');
   const [selectedCaseId, setSelectedCaseId] = useState(() => {
     const initial = parseHash().caseId;
     const list = getAllCases();
@@ -64,10 +70,13 @@ export default function App() {
   }, []);
 
   const quizDeck = useMemo(() => {
-    if (!activeModality || activeModality === 'Toutes') return allCases;
-    const filtered = allCases.filter((c) => c.modality === activeModality);
+    const filtered = allCases.filter((c) => {
+      if (activeRegion !== 'all' && c.region !== activeRegion) return false;
+      if (activeModality !== 'Toutes' && c.modality !== activeModality) return false;
+      return true;
+    });
     return filtered.length > 0 ? filtered : allCases;
-  }, [allCases, activeModality]);
+  }, [allCases, activeModality, activeRegion]);
 
   const currentIdx = useMemo(() => {
     if (!quizDeck.length) return -1;
@@ -77,8 +86,9 @@ export default function App() {
 
   const currentCase = currentIdx >= 0 ? quizDeck[currentIdx] : null;
 
-  const handleStartQuiz = (caseId, modality = 'Toutes') => {
+  const handleStartQuiz = (caseId, modality = 'Toutes', region = 'all') => {
     setActiveModality(modality);
+    setActiveRegion(region);
     setSelectedCaseId(caseId);
     window.location.hash = `#/cas/${caseId}`;
   };
@@ -86,6 +96,7 @@ export default function App() {
   const handleRandomCase = () => {
     if (!allCases.length) return;
     setActiveModality('Toutes');
+    setActiveRegion('all');
     const unanswered = allCases.filter((c) => !progress[c.id]?.status);
     const pool = unanswered.length > 0 ? unanswered : allCases;
     const pick = pool[Math.floor(Math.random() * pool.length)];
@@ -100,6 +111,7 @@ export default function App() {
 
   const handleOpenCaseInQuiz = (id) => {
     setActiveModality('Toutes');
+    setActiveRegion('all');
     setSelectedCaseId(id);
     window.location.hash = `#/cas/${id}`;
   };
@@ -168,7 +180,6 @@ export default function App() {
         )}
       </main>
 
-      <Footer />
       <BottomNav currentRoute={navState.route} />
     </>
   );

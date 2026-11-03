@@ -1,216 +1,140 @@
 import { useMemo, useState } from 'react';
 import { REGIONS, MODALITIES } from '../data/cases.js';
 
-const MODALITY_ICONS = {
-  Radiographie: '🦴',
-  IRM: '🧲',
-  'Arthroscanner / TDM': '💿',
-  Échographie: '📡',
-};
-
 export default function CaseFeedPage({
   allCases,
   progress,
-  bookmarks,
   onStartQuiz,
-  onStartRandom,
 }) {
-  const [modalityFilter, setModalityFilter] = useState('Toutes');
+  const [selectedRegion, setSelectedRegion] = useState('all');
+  const [selectedModality, setSelectedModality] = useState('Toutes');
+
+  const matchingCases = useMemo(() => {
+    return allCases.filter((c) => {
+      if (selectedRegion !== 'all' && c.region !== selectedRegion) return false;
+      if (selectedModality !== 'Toutes' && c.modality !== selectedModality) return false;
+      return true;
+    });
+  }, [allCases, selectedRegion, selectedModality]);
 
   const stats = useMemo(() => {
     let solved = 0;
-    let attempted = 0;
-    for (const c of allCases) {
+    for (const c of matchingCases) {
       const st = progress[c.id]?.status;
-      if (st) {
-        attempted++;
-        if (st === 'exact' || st === 'partial') solved++;
-      }
+      if (st === 'exact' || st === 'partial') solved++;
     }
-    const pct = allCases.length > 0 ? Math.round((solved / allCases.length) * 100) : 0;
+    const pct = matchingCases.length > 0 ? Math.round((solved / matchingCases.length) * 100) : 0;
     return {
-      total: allCases.length,
+      total: matchingCases.length,
       solved,
-      attempted,
-      todo: Math.max(0, allCases.length - attempted),
       pct,
     };
-  }, [allCases, progress]);
+  }, [matchingCases, progress]);
 
-  const filteredCases = useMemo(() => {
-    if (modalityFilter === 'Toutes') return allCases;
-    return allCases.filter((c) => c.modality === modalityFilter);
-  }, [allCases, modalityFilter]);
-
-  const handleContinueQuiz = () => {
-    const nextUnanswered = allCases.find((c) => !progress[c.id]?.status);
-    const target = nextUnanswered || allCases[0];
-    if (target) {
-      onStartQuiz(target.id, 'Toutes');
-    }
-  };
-
-  const handleLaunchModality = (mod) => {
-    const pool = mod === 'Toutes' ? allCases : allCases.filter((c) => c.modality === mod);
+  const handleStart = () => {
+    const pool = matchingCases.length > 0 ? matchingCases : allCases;
     if (!pool.length) return;
     const nextUnanswered = pool.find((c) => !progress[c.id]?.status) || pool[0];
-    onStartQuiz(nextUnanswered.id, mod);
+    onStartQuiz(nextUnanswered.id, selectedModality, selectedRegion);
+  };
+
+  const handleRandom = () => {
+    const pool = matchingCases.length > 0 ? matchingCases : allCases;
+    if (!pool.length) return;
+    const unanswered = pool.filter((c) => !progress[c.id]?.status);
+    const list = unanswered.length > 0 ? unanswered : pool;
+    const pick = list[Math.floor(Math.random() * list.length)];
+    onStartQuiz(pick.id, selectedModality, selectedRegion);
   };
 
   return (
-    <div className="home-clean-container">
-      {/* 1. Clean Hero Card */}
-      <section className="home-hero-card">
-        <div className="home-hero-top">
-          <div className="home-brand-badge">
-            <img src="./apple-touch-icon.png" alt="" className="home-hero-logo" />
+    <div className="home-mobile-screen">
+      <section className="home-card">
+        {/* Brand Header */}
+        <div className="home-header-row">
+          <div className="home-brand">
+            <img src="./apple-touch-icon.png" alt="" className="home-logo" />
             <div>
-              <span className="home-eyebrow">QUIZ Imagerie Cochin</span>
-              <h1 className="home-title">1 Image, 1 Diagnostic</h1>
+              <span className="home-tag">QUIZ Imagerie Cochin</span>
+              <h1 className="home-heading">1 Image · 1 Quiz</h1>
             </div>
           </div>
-          <span className="home-score-pill">
-            {stats.solved} / {stats.total} validés
-          </span>
+          <div className="home-counter-badge">
+            <strong>{stats.solved}</strong>/{stats.total}
+          </div>
         </div>
-
-        <p className="home-lead">
-          Observez le cliché radiologique, saisissez votre diagnostic (avec autocomplétion) et passez à la question suivante.
-        </p>
 
         {/* Progress Bar */}
-        <div className="home-progress-wrap">
-          <div className="home-progress-track">
-            <div className="home-progress-fill" style={{ width: `${stats.pct}%` }} />
+        <div className="home-bar-wrap">
+          <div className="home-bar-track">
+            <div className="home-bar-fill" style={{ width: `${stats.pct}%` }} />
           </div>
-          <div className="home-progress-labels">
-            <span>{stats.pct}% complété</span>
-            <span>{stats.todo} restant{stats.todo > 1 ? 's' : ''}</span>
+          <div className="home-bar-meta">
+            <span>Progression : {stats.pct}%</span>
+            <span>{stats.total} question{stats.total > 1 ? 's' : ''} disponible{stats.total > 1 ? 's' : ''}</span>
           </div>
         </div>
 
-        {/* Big Mobile-Friendly Primary CTA Buttons */}
-        <div className="home-cta-group">
-          <button
-            type="button"
-            className="btn btn-primary home-main-cta"
-            onClick={handleContinueQuiz}
-          >
-            <span>▶ {stats.attempted > 0 ? 'Continuer le Quiz' : 'Commencer le Quiz'}</span>
-          </button>
-          <button
-            type="button"
-            className="btn btn-ghost home-secondary-cta"
-            onClick={onStartRandom}
-          >
-            🎲 Question au hasard
-          </button>
-        </div>
-      </section>
-
-      {/* 2. Quick Launch by Modality (2x2 Grid on Mobile) */}
-      <section className="home-section">
-        <div className="home-section-head">
-          <h2>Lancer par modalité</h2>
-          <span>1 page par question</span>
-        </div>
-
-        <div className="home-modality-grid">
-          {MODALITIES.filter((m) => m !== 'Toutes').map((mod) => {
-            const list = allCases.filter((c) => c.modality === mod);
-            const done = list.filter(
-              (c) =>
-                progress[c.id]?.status === 'exact' ||
-                progress[c.id]?.status === 'partial'
-            ).length;
-            return (
+        {/* Region Selection */}
+        <div className="home-filter-block">
+          <label className="home-filter-title">Région</label>
+          <div className="home-chips-grid">
+            {REGIONS.map((r) => (
               <button
-                key={mod}
+                key={r.id}
                 type="button"
-                className="home-modality-card"
-                onClick={() => handleLaunchModality(mod)}
+                className={`home-chip-btn ${selectedRegion === r.id ? 'is-active' : ''}`}
+                onClick={() => setSelectedRegion(r.id)}
               >
-                <div className="home-modality-icon">{MODALITY_ICONS[mod] || '🩻'}</div>
-                <div className="home-modality-info">
-                  <strong>{mod}</strong>
-                  <span>
-                    {done}/{list.length} cas
-                  </span>
-                </div>
-                <span className="home-modality-arrow">→</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 3. Clean List of Questions */}
-      <section className="home-section">
-        <div className="home-section-head">
-          <h2>Toutes les questions ({filteredCases.length})</h2>
-          <div className="home-mini-filters">
-            {MODALITIES.map((mod) => (
-              <button
-                key={mod}
-                type="button"
-                className={`home-mini-chip ${modalityFilter === mod ? 'is-active' : ''}`}
-                onClick={() => setModalityFilter(mod)}
-              >
-                {mod === 'Arthroscanner / TDM' ? 'TDM' : mod}
+                {r.logo && <img src={r.logo} alt="" className="home-chip-icon" />}
+                <span>{r.shortTitle}</span>
               </button>
             ))}
           </div>
         </div>
 
-        <div className="home-questions-list">
-          {filteredCases.map((c, idx) => {
-            const p = progress[c.id];
-            const isSolved = p?.status === 'exact' || p?.status === 'partial';
-            const isReviewed = p?.status === 'wrong' || p?.status === 'revealed';
-            const regionObj = REGIONS.find((r) => r.id === c.region) || REGIONS[1];
-
-            return (
+        {/* Modality Selection */}
+        <div className="home-filter-block">
+          <label className="home-filter-title">Modalité</label>
+          <div className="home-modality-pills">
+            {MODALITIES.map((mod) => (
               <button
-                key={c.id}
+                key={mod}
                 type="button"
-                className={`home-question-row ${
-                  isSolved ? 'is-solved' : isReviewed ? 'is-review' : ''
-                }`}
-                onClick={() => onStartQuiz(c.id, modalityFilter)}
+                className={`home-chip-btn ${selectedModality === mod ? 'is-active' : ''}`}
+                onClick={() => setSelectedModality(mod)}
               >
-                <img
-                  src={c.image}
-                  alt=""
-                  className="home-question-thumb"
-                  loading="lazy"
-                />
-
-                <div className="home-question-body">
-                  <div className="home-question-top">
-                    <span className="home-question-num">
-                      Question #{String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <span className="home-question-mod">{c.modality}</span>
-                    {bookmarks.has(c.id) && <span className="pill-star">★</span>}
-                  </div>
-
-                  <strong className="home-question-title">
-                    {p?.status ? c.diagnosis : `${regionObj.shortTitle} — Cliquez pour diagnostiquer`}
-                  </strong>
-                </div>
-
-                <div className="home-question-right">
-                  {isSolved ? (
-                    <span className="row-status-pill is-exact">✓ Validé</span>
-                  ) : isReviewed ? (
-                    <span className="row-status-pill is-review">À revoir</span>
-                  ) : (
-                    <span className="row-status-pill is-todo">Jouer →</span>
-                  )}
-                </div>
+                <span>{mod === 'Arthroscanner / TDM' ? 'Scanner / TDM' : mod}</span>
               </button>
-            );
-          })}
+            ))}
+          </div>
+        </div>
+
+        {/* Primary Actions */}
+        <div className="home-actions-stack">
+          <button
+            type="button"
+            className="btn btn-primary home-start-btn"
+            onClick={handleStart}
+            disabled={matchingCases.length === 0}
+          >
+            ▶ Lancer le Quiz ({matchingCases.length} cas)
+          </button>
+
+          <div className="home-secondary-row">
+            <button
+              type="button"
+              className="btn btn-ghost home-sec-btn"
+              onClick={handleRandom}
+              disabled={matchingCases.length === 0}
+            >
+              🎲 Aléatoire
+            </button>
+
+            <a href="#/studio" className="btn btn-ghost home-sec-btn home-propose-btn">
+              ➕ Proposer une question
+            </a>
+          </div>
         </div>
       </section>
     </div>
