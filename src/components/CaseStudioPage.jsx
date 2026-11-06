@@ -337,21 +337,6 @@ export default function CaseStudioPage({
           </div>
         </div>
 
-        {/* 5. ÉNONCÉ (Optionnel) */}
-        <div className="propose-step">
-          <label htmlFor="propose-context" className="propose-label">
-            5. Énoncé <span className="propose-optional">(pas obligatoire)</span>
-          </label>
-          <input
-            id="propose-context"
-            type="text"
-            className="text-input"
-            placeholder="Ex. Douleur d’épaule après chute chez un patient de 45 ans…"
-            value={form.clinicalContext}
-            onChange={(e) => updateField('clinicalContext', e.target.value)}
-          />
-        </div>
-
         {/* SUBMIT */}
         <div className="propose-submit-row">
           {form.id && (

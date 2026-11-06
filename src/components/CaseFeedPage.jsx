@@ -56,7 +56,7 @@ export default function CaseFeedPage({
             <img src="./apple-touch-icon.png" alt="" className="home-logo" />
             <div>
               <span className="home-tag">QUIZ Imagerie Cochin</span>
-              <h1 className="home-heading">1 Image · 1 Quiz</h1>
+              <h1 className="home-heading">1 Image · 1 Diagnostic</h1>
             </div>
           </div>
           <div className="home-counter-badge">
