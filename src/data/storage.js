@@ -1,9 +1,9 @@
 import { INITIAL_CASES } from './cases.js';
 
-const CUSTOM_CASES_KEY = 'quiz-imagerie:custom-cases:v1';
-const DELETED_IDS_KEY = 'quiz-imagerie:deleted-ids:v1';
-const PROGRESS_KEY = 'quiz-imagerie:progress:v1';
-const BOOKMARKS_KEY = 'quiz-imagerie:bookmarks:v1';
+const CUSTOM_CASES_KEY = 'quiz-imagerie:custom-cases:v2';
+const DELETED_IDS_KEY = 'quiz-imagerie:deleted-ids:v2';
+const PROGRESS_KEY = 'quiz-imagerie:progress:v2';
+const BOOKMARKS_KEY = 'quiz-imagerie:bookmarks:v2';
 const PSEUDO_KEY = 'quiz-imagerie:pseudo:v1';
 
 const listeners = new Set();
