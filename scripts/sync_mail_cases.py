@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Synchronisation et anonymisation automatique des nouvelles images radiologiques
 reçues ou envoyées par mail (Hippolyte, Macil, Marie-Pauline, Yazid, Stefano, Thomas).
@@ -142,7 +142,12 @@ def infer_metadata(body: str, subject: str):
         (r"morton", "Névrome de Morton"),
         (r"desmoïde|desmoide|fibromatose", "Tumeur desmoïde (fibromatose profonde)"),
         (r"myxome", "Myxome intramusculaire"),
+        (r"ttcg|ténosynoviale à cellules géantes|synovite villonodulaire|svn", "Tumeur ténosynoviale à cellules géantes (TTCG / synovite villonodulaire)"),
         (r"tumeur à cellules géantes|\btcg\b", "Tumeur à cellules géantes (TCG)"),
+        (r"dysplasie fibreuse", "Dysplasie fibreuse"),
+        (r"chondrocalcinose|pyrophosphate|cppd", "Chondrocalcinose articulaire (arthropathie à pyrophosphate de calcium)"),
+        (r"sacro-iliite|spondyloarthrite", "Sacro-iliite inflammatoire active (spondyloarthrite axiale)"),
+        (r"énostose|îlot condensant|ilot condensant", "Énostose (îlot condensant bénin)"),
         (r"chondrosarcome", "Chondrosarcome"),
         (r"infarctus osseux|ostéonécrose", "Infarctus osseux (ostéonécrose)"),
         (r"malformation vasculaire|malformation artério-veineuse", "Malformation vasculaire des parties molles"),
@@ -153,6 +158,7 @@ def infer_metadata(body: str, subject: str):
         (r"doigt à ressaut|pouce à ressaut|poulie a1", "Doigt à ressaut (ténosynovite sténosante sur poulie A1)"),
         (r"capsulite", "Capsulite rétractile de l'épaule"),
         (r"kyste essentiel|kyste unicaméral", "Kyste osseux essentiel (unicaméral)"),
+        (r"tassement|fracture.*ostéoporotique", "Fracture-tassement vertébrale ostéoporotique"),
     ]
     diagnosis = None
     for pat, label in DIAG_PATTERNS:

@@ -22,6 +22,23 @@ export const MODALITIES = [
 
 // Référentiel complet de diagnostics ostéo-articulaires du Cotten (36 chapitres) + classiques pour l'autocomplétion
 export const DIAGNOSIS_DICTIONARY = [
+  "Dysplasie fibreuse du fémur proximal ostéosynthésée",
+  "Métastase osseuse ostéolytique de la branche ilio-pubienne avec envahissement des parties molles",
+  "Tumeur ténosynoviale à cellules géantes (TTCG / synovite villonodulaire)",
+  "Lésion épiphysaire anévrismalisée du condyle fémoral médial (TCG / chondroblastome avec kyste anévrismal secondaire)",
+  "Dysplasie fibreuse quiescente en involution de la métaphyse fémorale proximale",
+  "Lésion osseuse secondaire (métastase) du sacrum au contact du foramen S2",
+  "Tumeur profonde des parties molles de la loge palmaire moyenne de la main (sous l'aponévrose palmaire)",
+  "Tumeur ténosynoviale à cellules géantes (TTCG) nodulaire de la bourse infrapatellaire profonde",
+  "Dysplasie fibreuse à prédominance kystique de la branche ilio-pubienne",
+  "Ossification post-traumatique de la membrane interosseuse tibio-fibulaire (synostose / myosite ossifiante)",
+  "Énostose (îlot condensant bénin) de la phalange distale",
+  "Sacro-iliite inflammatoire active (spondyloarthrite axiale)",
+  "Lésion osseuse maligne de l'aile iliaque en territoire irradié (métastase osseuse / sarcome radio-induit)",
+  "Chondrocalcinose articulaire (arthropathie à pyrophosphate de calcium / CPPD)",
+  "Fracture-tassement ostéoporotique récente du plateau supérieur de T12",
+  "Collection liquidienne péritrochantérienne post-opératoire de la hanche (sérome / hématome enkysté / abcès)",
+  "Récidive locale de tumeur à cellules géantes (TCG) du tibia proximal au contact du pédicule poplité",
   "Tumeur bénigne des gaines des nerfs périphériques (schwannome) foraminale lombaire",
   "Schwannome intermusculaire de la fosse infra-épineuse (tumeur nerveuse bénigne)",
   "Tumeur mésenchymateuse superficielle non graisseuse des parties molles du dos (sarcome superficiel)",
@@ -144,6 +161,694 @@ export const DIAGNOSIS_DICTIONARY = [
 ];
 
 export const INITIAL_CASES = [
+  {
+      "id": "mail-47",
+      "title": "Cas Imagerie #47",
+      "region": "hanche",
+      "modality": "Radiographie",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-47.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "Radiographie du fémur proximal — analysez la trame osseuse diaphyso-métaphysaire remaniée et le matériel d'ostéosynthèse centromédullaire.",
+      "diagnosis": "Dysplasie fibreuse du fémur proximal ostéosynthésée",
+      "synonyms": [
+          "Dysplasie fibreuse du fémur proximal",
+          "Dysplasie fibreuse fémorale",
+          "Dysplasie fibreuse osseuse"
+      ],
+      "requiredKeywords": [
+          [
+              "dysplasie",
+              "fibreuse"
+          ],
+          [
+              "fémur",
+              "femur",
+              "fémorale",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Maladie de Paget du fémur proximal",
+          "Chondrosarcome dédifférencié du fémur",
+          "Kyste osseux essentiel solitaire du fémur proximal"
+      ],
+      "keySigns": [
+          "Lésion médullaire soufflante diaphyso-métaphysaire proximale du fémur en verre dépoli",
+          "Amincissement cortical endosté sans réaction périostée agressive",
+          "Ostéosynthèse préventive ou curative par enclouage centromédullaire cervico-diaphysaire"
+      ],
+      "explanation": "La dysplasie fibreuse du fémur proximal se caractérise par un remplacement médullaire fibreux en « verre dépoli » fragilisant l'os porteur (déformation en crosse de berger / fractures pathologiques), nécessitant fréquemment un enclouage centromédullaire cervico-diaphysaire."
+  },
+  {
+      "id": "mail-48",
+      "title": "Cas Imagerie #48",
+      "region": "hanche",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-48.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM du bassin — analysez la ostéolyse corticale du cadre obturateur et la masse tissulaire adjacente.",
+      "diagnosis": "Métastase osseuse ostéolytique de la branche ilio-pubienne avec envahissement des parties molles",
+      "synonyms": [
+          "Métastase ostéolytique de la branche ilio-pubienne",
+          "Lésion osseuse secondaire du cadre obturateur",
+          "Plasmocytome / métastase de la branche pubienne"
+      ],
+      "requiredKeywords": [
+          [
+              "métastase",
+              "metastase",
+              "secondaire",
+              "plasmocytome"
+          ],
+          [
+              "pubienne",
+              "pubis",
+              "ilio-pubienne",
+              "obturateur",
+              "bassin"
+          ]
+      ],
+      "distractors": [
+          "Fracture par insuffisance osseuse de la branche ilio-pubienne",
+          "Ostéite pubienne aseptique",
+          "Enchondrome calcifié de la branche ilio-pubienne"
+      ],
+      "keySigns": [
+          "Ostéolyse géographique agressive de type Lodwick IC/II détruisant les corticales de la branche ilio-pubienne",
+          "Volumineuse composante tissulaire extra-osseuse envahissant la loge obturatrice et les adducteurs",
+          "Absence de matrice minéralisée chondroïde ou ostéoïde"
+      ],
+      "explanation": "L'ostéolyse destructrice de la branche ilio-pubienne avec rupture corticale circonférentielle et masse des parties molles est caractéristique d'une localisation secondaire agressive (ou d'un plasmocytome)."
+  },
+  {
+      "id": "mail-49",
+      "title": "Cas Imagerie #49",
+      "region": "genou",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-49.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM — analysez le signal caractéristique en pondération T1/T2 de cette lésion nodulaire bien limitée au contact des structures capsulo-synoviales.",
+      "diagnosis": "Tumeur ténosynoviale à cellules géantes (TTCG / synovite villonodulaire)",
+      "synonyms": [
+          "Tumeur ténosynoviale à cellules géantes",
+          "TTCG",
+          "Synovite villonodulaire",
+          "SVN nodulaire"
+      ],
+      "requiredKeywords": [
+          [
+              "ténosynoviale",
+              "tenosynoviale",
+              "ttcg",
+              "villonodulaire",
+              "svn",
+              "cellules géantes"
+          ]
+      ],
+      "distractors": [
+          "Kyste synovial poplité simple",
+          "Lipome arborescent synovial",
+          "Schwannome kystisé"
+      ],
+      "keySigns": [
+          "Masse synoviale ou juxta-articulaire lobulée bien circonscrite",
+          "Hyposignal franc T1 et T2 lié aux dépôts d'hémosidérine",
+          "Rehaussement intense après injection de gadolinium"
+      ],
+      "explanation": "La tumeur ténosynoviale à cellules géantes (TTCG, anciennement synovite villonodulaire) présente un hyposignal T1 et T2 caractéristique lié à la surcharge macrophagique en hémosidérine."
+  },
+  {
+      "id": "mail-50",
+      "title": "Cas Imagerie #50",
+      "region": "genou",
+      "modality": "IRM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-50.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du genou — analysez la topographie épiphysaire sous-chondrale, la composante kystique à niveaux liquides et l'œdème périlésionnel.",
+      "diagnosis": "Lésion épiphysaire anévrismalisée du condyle fémoral médial (TCG / chondroblastome avec kyste anévrismal secondaire)",
+      "synonyms": [
+          "Tumeur à cellules géantes (TCG) anévrismalisée du condyle fémoral",
+          "Chondroblastome épiphysaire avec kyste osseux anévrismal secondaire",
+          "Kyste osseux anévrismal secondaire sur tumeur épiphysaire du condyle fémoral"
+      ],
+      "requiredKeywords": [
+          [
+              "anévrismal",
+              "anevrismal",
+              "tcg",
+              "cellules géantes",
+              "chondroblastome"
+          ],
+          [
+              "condyle",
+              "épiphysaire",
+              "epiphysaire",
+              "fémoral",
+              "genou"
+          ]
+      ],
+      "distractors": [
+          "Infarctus osseux épiphysaire du condyle fémoral",
+          "Ostéochondrite disséquante du condyle fémoral médial",
+          "Geode sous-chondrale d'arthrose fémoro-tibiale"
+      ],
+      "keySigns": [
+          "Lésion ostéolytique excentrée à point de départ épiphysaire du condyle fémoral médial atteignant la lame osseuse sous-chondrale",
+          "Logettes kystiques multiples avec niveaux liquide-liquide de sédimentation hématique (contingent anévrismal secondaire)",
+          "Important œdème osseux et des parties molles périlésionnel réactionnel"
+      ],
+      "explanation": "Devant une lésion épiphysaire bien limitée comportant des niveaux liquide-liquide et un œdème réactionnel marqué chez le sujet jeune, il faut évoquer une tumeur épiphysaire bénigne localement agressive (tumeur à cellules géantes ou chondroblastome) remaniée par un kyste osseux anévrismal secondaire."
+  },
+  {
+      "id": "mail-51",
+      "title": "Cas Imagerie #51",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-51.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM coronale T1 de la hanche — analysez cette lésion centro-médullaire bien limitée à liseré périphérique de la région intertrochantérienne.",
+      "diagnosis": "Dysplasie fibreuse quiescente en involution de la métaphyse fémorale proximale",
+      "synonyms": [
+          "Dysplasie fibreuse du fémur proximal",
+          "Lésion fibro-osseuse bénigne du col fémoral (dysplasie fibreuse / liposcléroxanthome)",
+          "Dysplasie fibreuse quiescente fémorale"
+      ],
+      "requiredKeywords": [
+          [
+              "dysplasie",
+              "fibreuse",
+              "fibro-osseuse",
+              "liposcléroxanthome"
+          ]
+      ],
+      "distractors": [
+          "Métastase ostéolytique du col fémoral",
+          "Sarcome d'Ewing du fémur proximal",
+          "Ostéomyélite aiguë hématogène du fémur"
+      ],
+      "keySigns": [
+          "Lésion intramédullaire métaphysaire proximale du fémur parfaitement circonscrite",
+          "Liseré périphérique continu en hyposignal T1 témoignant de la sclérose marginale (type Lodwick IA)",
+          "Respect complet des corticales et absence d'œdème périlésionnel"
+      ],
+      "explanation": "Cette lésion centro-médullaire métaphysaire fémorale proximale bordée d'un liseré sclérotique épais sans agressivité corticale correspond à une lésion fibro-osseuse bénigne quiescente de type dysplasie fibreuse en involution."
+  },
+  {
+      "id": "mail-52",
+      "title": "Cas Imagerie #52",
+      "region": "rachis",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-52.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du sacrum — analysez le remplacement de la moelle osseuse adjacente au foramen sacré S2.",
+      "diagnosis": "Lésion osseuse secondaire (métastase) du sacrum au contact du foramen S2",
+      "synonyms": [
+          "Métastase osseuse sacrée (S2)",
+          "Lésion secondaire du sacrum",
+          "Métastase sacrée périforamוnale S2"
+      ],
+      "requiredKeywords": [
+          [
+              "métastase",
+              "metastase",
+              "secondaire"
+          ],
+          [
+              "sacrum",
+              "sacrée",
+              "sacree",
+              "s2"
+          ]
+      ],
+      "distractors": [
+          "Kyste de Tarlov sacré S2",
+          "Fracture sacrée par insuffisance osseuse",
+          "Îlot condensant bénin du sacrum"
+      ],
+      "keySigns": [
+          "Nodule ostéolytique remplaçant le signal graisseux normal de l'aileron sacré en bordure du 2e trou sacré (S2)",
+          "Hyposignal T1 / hypersignal STIR avec rehaussement tissulaire",
+          "Menace directe sur la racine sacrée S2 homolatérale dans son foramen"
+      ],
+      "explanation": "La présence d'une lésion nodulaire focale remplaçant la moelle graisseuse sacrée au contact immédiat du foramen S2 correspond à une localisation osseuse secondaire (métastase sacrée)."
+  },
+  {
+      "id": "mail-53",
+      "title": "Cas Imagerie #53",
+      "region": "main-poignet",
+      "modality": "IRM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-53.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la main — analysez les rapports de cette masse tissulaire palmaire avec l'aponévrose palmaire superficielle et les tendons fléchisseurs.",
+      "diagnosis": "Tumeur profonde des parties molles de la loge palmaire moyenne de la main (sous l'aponévrose palmaire)",
+      "synonyms": [
+          "Tumeur mésenchymateuse profonde de la loge palmaire moyenne de la main",
+          "Tumeur des parties molles palmaires profondes de la main",
+          "Schwannome / tumeur fibreuse ou synoviale de la loge palmaire moyenne"
+      ],
+      "requiredKeywords": [
+          [
+              "tumeur",
+              "masse",
+              "schwannome",
+              "sarcome"
+          ],
+          [
+              "palmaire",
+              "main",
+              "aponévrose",
+              "aponevrose"
+          ]
+      ],
+      "distractors": [
+          "Maladie de Dupuytren (fibromatose palmaire superficielle)",
+          "Kyste arthrosynovial de la poulie A1",
+          "Ténosynovite infectieuse des fléchisseurs"
+      ],
+      "keySigns": [
+          "Masse tissulaire bien limitée mais lobulée siégeant en profondeur de l'aponévrose palmaire superficielle",
+          "Effet de masse refoulant les tendons fléchisseurs et les pédicules vasculo-nerveux digitaux dans la loge palmaire moyenne",
+          "Hypersignal T2 hétérogène et prise de contraste tissulaire nécessitant une biopsie-exérèse spécialisée"
+      ],
+      "explanation": "Toute masse tissulaire palmaire située en profondeur de l'aponévrose palmaire superficielle dans la loge palmaire moyenne au contact des tendons fléchisseurs et des rameaux du nerf médian doit être explorée en centre référent avant geste chirurgical."
+  },
+  {
+      "id": "mail-54",
+      "title": "Cas Imagerie #54",
+      "region": "genou",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-54.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du genou — analysez cette formation nodulaire bien limitée développée en profondeur du tendon patellaire distal.",
+      "diagnosis": "Tumeur ténosynoviale à cellules géantes (TTCG) nodulaire de la bourse infrapatellaire profonde",
+      "synonyms": [
+          "TTCG nodulaire infrapatellaire",
+          "Tumeur ténosynoviale à cellules géantes du genou (Hoffa / infrapatellaire)",
+          "Synovite villonodulaire nodulaire infrapatellaire"
+      ],
+      "requiredKeywords": [
+          [
+              "ténosynoviale",
+              "tenosynoviale",
+              "ttcg",
+              "villonodulaire",
+              "svn",
+              "cellules géantes"
+          ],
+          [
+              "infrapatellaire",
+              "patellaire",
+              "hoffa",
+              "genou"
+          ]
+      ],
+      "distractors": [
+          "Bursite infrapatellaire profonde simple",
+          "Tendinopathie nodulaire distale du tendon patellaire (maladie d'Osgood-Schlatter)",
+          "Chondrome para-articulaire de la graisse de Hoffa"
+      ],
+      "keySigns": [
+          "Masse nodulaire bien circonscrite logée dans la bourse infrapatellaire profonde entre le tendon patellaire et la tubérosité tibiale antérieure",
+          "Signal intermédiaire à bas en T1 et T2 avec foyers d'hyposignal franc (hémosidérine)",
+          "Absence d'infiltration osseuse tibiale sous-jacente"
+      ],
+      "explanation": "Cette masse nodulaire bien limitée en hyposignal T2 partiel développée dans la bourse infrapatellaire profonde à la partie inférieure du corps adipeux de Hoffa est typique d'une forme localisée (nodulaire) de tumeur ténosynoviale à cellules géantes (TTCG)."
+  },
+  {
+      "id": "mail-55",
+      "title": "Cas Imagerie #55",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-55.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM et TDM du bassin — analysez cette lésion soufflante bien limitée de la branche ilio-pubienne à contenu majoritairement kystique.",
+      "diagnosis": "Dysplasie fibreuse à prédominance kystique de la branche ilio-pubienne",
+      "synonyms": [
+          "Dysplasie fibreuse kystisée de la branche ilio-pubienne",
+          "Dysplasie fibreuse du bassin (branche pubienne)",
+          "Dysplasie fibreuse osseuse pelvienne"
+      ],
+      "requiredKeywords": [
+          [
+              "dysplasie",
+              "fibreuse"
+          ],
+          [
+              "pubienne",
+              "pubis",
+              "ilio-pubienne",
+              "bassin",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Métastase ostéolytique de la branche ilio-pubienne",
+          "Chondrosarcome pelvien",
+          "Kyste synovial obturateur à développement intra-osseux"
+      ],
+      "keySigns": [
+          "Lésion intramédullaire soufflante bien circonscrite remodelant la branche ilio-pubienne sans rupture corticale agressive",
+          "Liseré de sclérose périphérique continu et plages résiduelles en verre dépoli au scanner",
+          "Dégénérescence kystique centrale en franc hypersignal T2 avec rehaussement uniquement périphérique et septal"
+      ],
+      "explanation": "La dysplasie fibreuse pelvienne peut subir une dégénérescence kystique marquée donnant un aspect pseudotumoral soufflant en hypersignal T2, mais le respect des corticales et les plages matricielles en verre dépoli orientent vers la bénignité."
+  },
+  {
+      "id": "mail-56",
+      "title": "Cas Imagerie #56",
+      "region": "jambe-cheville-pied",
+      "modality": "Radiographie",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-56.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "Radiographie de jambe — observez le pont calcifié/ossifié développé entre le tibia et la fibula.",
+      "diagnosis": "Ossification post-traumatique de la membrane interosseuse tibio-fibulaire (synostose / myosite ossifiante)",
+      "synonyms": [
+          "Ossification de la membrane interosseuse tibio-fibulaire",
+          "Synostose tibio-fibulaire acquise",
+          "Ossification hétérotopique inter-tibio-fibulaire"
+      ],
+      "requiredKeywords": [
+          [
+              "ossification",
+              "synostose",
+              "calcification",
+              "exostose"
+          ],
+          [
+              "membrane",
+              "interosseuse",
+              "tibio-fibulaire",
+              "tibiofibulaire",
+              "fibula",
+              "tibia"
+          ]
+      ],
+      "distractors": [
+          "Ostéosarcome parostéal du tibia",
+          "Ostéochondrome (exostose ostéogénique) à coiffe cartilagineuse épaisse",
+          "Chondrosarcome périphérique de la fibula"
+      ],
+      "keySigns": [
+          "Pont osseux mature bien cortiqué développé dans le plan de la membrane interosseuse entre tibia et fibula",
+          "Continuité trabéculaire régulière sans ostéolyse corticale ni réaction périostée maligne",
+          "Absence de masse des parties molles adjacentes"
+      ],
+      "explanation": "Cette ossification mature bien cortiquée développée le long de l'insertion de la membrane interosseuse tibio-fibulaire correspond à une ossification métaplasique bénigne (souvent séquellaire d'une entorse ou d'un traumatisme de la syndesmose/membrane interosseuse)."
+  },
+  {
+      "id": "mail-57",
+      "title": "Cas Imagerie #57",
+      "region": "main-poignet",
+      "modality": "Radiographie",
+      "difficulty": 1,
+      "image": "./figures/mails/mail-57.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "Radiographie centrée sur un rayon digital — analysez ce petit foyer condensant homogène de la houpe phalangienne.",
+      "diagnosis": "Énostose (îlot condensant bénin) de la phalange distale",
+      "synonyms": [
+          "Énostose de la phalange distale",
+          "Îlot condensant bénin phalangien",
+          "Ilot osseux bénin de la phalange"
+      ],
+      "requiredKeywords": [
+          [
+              "énostose",
+              "enostose",
+              "îlot",
+              "ilot",
+              "condensant"
+          ]
+      ],
+      "distractors": [
+          "Ostéome ostéoïde de la phalange distale",
+          "Tumeur glomique sous-unguéale",
+          "Kyste épidermoïde intra-osseux de la phalange distale"
+      ],
+      "keySigns": [
+          "Foyer d'ostéocondensation homogène intramédullaire de petite taille de la phalange distale",
+          "Contours finement spiculés en « pattes d'araignée » se raccordant aux travées spongieuses normales",
+          "Absence totale d'ostéolyse périphérique (pas de nidus), d'érosion corticale ou d'épaississement des parties molles"
+      ],
+      "explanation": "L'énostose (ou îlot condensant bénin) est une lésion ostéocondensante pure, asymptomatique (« Don't touch lesion »), sans nidus radiotransparent ni réaction périostée, qu'il ne faut pas confondre avec un ostéome ostéoïde."
+  },
+  {
+      "id": "mail-58",
+      "title": "Cas Imagerie #58",
+      "region": "rachis",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-58.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM des articulations sacro-iliaques — analysez le signal osseux sous-chondral des berges sacrées et iliaques.",
+      "diagnosis": "Sacro-iliite inflammatoire active (spondyloarthrite axiale)",
+      "synonyms": [
+          "Sacro-iliite inflammatoire bilatérale",
+          "Spondyloarthrite axiale avec sacro-iliite active",
+          "Remaniements inflammatoires sacro-iliaques (sacro-iliite)"
+      ],
+      "requiredKeywords": [
+          [
+              "sacro-iliite",
+              "sacroiliite",
+              "spondyloarthrite",
+              "sacro-iliaque",
+              "sacroiliaque"
+          ]
+      ],
+      "distractors": [
+          "Ostéose iliaque condensante bénigne",
+          "Sacro-iliite infectieuse (pyogène ou tuberculeuse)",
+          "Fracture sacrée en H par insuffisance osseuse"
+      ],
+      "keySigns": [
+          "Œdème osseux sous-chondral en franc hypersignal STIR/T2 Fat-Sat des berges articulaires sacro-iliaques",
+          "Irrégularités et érosions sous-chondrales de la portion synoviale antéro-inférieure des articulations sacro-iliaques",
+          "Respect des parties molles pelviennes sans abcès péri-articulaire"
+      ],
+      "explanation": "L'œdème osseux sous-chondral inflammatoire des berges sacro-iliaques associé à des érosions sous-chondrales répond aux critères ASAS de sacro-iliite active dans le cadre d'une spondyloarthrite axiale."
+  },
+  {
+      "id": "mail-59",
+      "title": "Cas Imagerie #59",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-59.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM et TDM de l'os iliaque — analysez cette lésion osseuse infiltrante de l'aile iliaque associée à une réaction périostée/tissulaire.",
+      "diagnosis": "Lésion osseuse maligne de l'aile iliaque en territoire irradié (métastase osseuse / sarcome radio-induit)",
+      "synonyms": [
+          "Métastase osseuse de l'aile iliaque ou sarcome radio-induit",
+          "Lésion secondaire de l'os iliaque",
+          "Sarcome osseux radio-induit / récidive métastatique iliaque"
+      ],
+      "requiredKeywords": [
+          [
+              "métastase",
+              "metastase",
+              "secondaire",
+              "sarcome",
+              "radio-induit"
+          ],
+          [
+              "iliaque",
+              "bassin",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Ostéoradionécrose bénigne simple de l'aile iliaque",
+          "Îlot condensant géant de l'aile iliaque",
+          "Maladie de Paget pelvienne isolée"
+      ],
+      "keySigns": [
+          "Infiltration médullaire hétérogène de l'aile iliaque en hyposignal T1 et hypersignal T2/diffusion",
+          "Remaniement ostéolytique et condensant mixte avec effraction corticale et épaississement tissulaire juxta-cortical",
+          "Nécessité d'une biopsie radioguidée pour différencier récidive métastatique et sarcome radio-induit sur os irradié"
+      ],
+      "explanation": "L'apparition d'une lésion osseuse infiltrante avec réaction périostée et composante tissulaire en territoire pelvien antérieurement irradié impose une biopsie osseuse pour trancher entre localisation secondaire et sarcome radio-induit."
+  },
+  {
+      "id": "mail-60",
+      "title": "Cas Imagerie #60",
+      "region": "genou",
+      "modality": "Radiographie",
+      "difficulty": 1,
+      "image": "./figures/mails/mail-60.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "Radiographie du genou — recherchez un fin liseré calcifié au sein des fibrocartilages et du cartilage hyalin.",
+      "diagnosis": "Chondrocalcinose articulaire (arthropathie à pyrophosphate de calcium / CPPD)",
+      "synonyms": [
+          "Chondrocalcinose articulaire du genou",
+          "Rhumatisme à pyrophosphate de calcium (CPPD)",
+          "Calcifications méniscales de chondrocalcinose"
+      ],
+      "requiredKeywords": [
+          [
+              "chondrocalcinose",
+              "pyrophosphate",
+              "cppd"
+          ]
+      ],
+      "distractors": [
+          "Ostéochondromatose synoviale primitive du genou",
+          "Rhumatisme à hydroxyapatite (calcifications péri-articulaires)",
+          "Ostéochondrite disséquante des condyles fémoraux"
+      ],
+      "keySigns": [
+          "Calcifications linéaires et finement grenues des fibrocartilages méniscaux dessinant le triangle méniscal",
+          "Fin liseré calcique sous-chondral doublant le contour du cartilage hyalin fémoro-tibial",
+          "Arthropathie structurale associée"
+      ],
+      "explanation": "La présence de calcifications méniscales et cartilagineuses hyalines bilatérales est pathognomonique d'une chondrocalcinose articulaire (dépôts de cristaux de pyrophosphate de calcium dihydraté)."
+  },
+  {
+      "id": "mail-61",
+      "title": "Cas Imagerie #61",
+      "region": "rachis",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 1,
+      "image": "./figures/mails/mail-61.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "Reconstruction TDM sagittale de la charnière thoraco-lombaire — analysez la morphologie du plateau vertébral supérieur de T12.",
+      "diagnosis": "Fracture-tassement ostéoporotique récente du plateau supérieur de T12",
+      "synonyms": [
+          "Fracture-tassement vertébrale ostéoporotique de T12",
+          "Tassement vertébral bénin du plateau supérieur de T12",
+          "Fracture par insuffisance osseuse de T12"
+      ],
+      "requiredKeywords": [
+          [
+              "fracture",
+              "tassement"
+          ],
+          [
+              "t12",
+              "vertébrale",
+              "vertebrale",
+              "thoraco-lombaire",
+              "ostéoporotique",
+              "osteoporotique"
+          ]
+      ],
+      "distractors": [
+          "Fracture pathologique maligne de T12 sur métastase",
+          "Spondylodiscite infectieuse T11-T12",
+          "Hernie intraspongieuse séquellaire de maladie de Scheuermann"
+      ],
+      "keySigns": [
+          "Impaction cunéiforme du plateau vertébral supérieur de T12 avec bande d'ostéocondensation trabéculaire sous-chondrale d'impaction",
+          "Respect complet du mur vertébral postérieur et des pédicules sans ostéolyse corticale",
+          "Déminéralisation osseuse diffuse sans masse épidurale ni paravertébrale"
+      ],
+      "explanation": "Ce tassement du plateau supérieur de T12 avec bande de condensation sous-chondrale d'impaction trabéculaire et respect du mur postérieur est typique d'une fracture vertébrale ostéoporotique bénigne."
+  },
+  {
+      "id": "mail-62",
+      "title": "Cas Imagerie #62",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-62.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la hanche — analysez cette collection liquidienne bien limitée des parties molles péritrochantériennes.",
+      "diagnosis": "Collection liquidienne péritrochantérienne post-opératoire de la hanche (sérome / hématome enkysté / abcès)",
+      "synonyms": [
+          "Collection liquidienne péritrochantérienne post-opératoire (sérome / abcès)",
+          "Sérome de Morel-Lavallée / collection péritrochantérienne",
+          "Bursite / collection liquidienne péritrochantérienne de la hanche"
+      ],
+      "requiredKeywords": [
+          [
+              "collection",
+              "sérome",
+              "serome",
+              "abcès",
+              "abces",
+              "hématome",
+              "hematome",
+              "bursite"
+          ],
+          [
+              "trochantérienne",
+              "trochanterienne",
+              "péritrochantérienne",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Liposarcome myxoïde de la racine de la cuisse",
+          "Kyste paralabral de la hanche",
+          "Ostéochondromatose synoviale coxofémorale"
+      ],
+      "keySigns": [
+          "Collection liquidienne bien limitée en franc hypersignal T2/STIR située en regard de la face latérale du grand trochanter",
+          "Paroi fine régulière avec discret œdème des plans musculo-aponévrotiques adjacents",
+          "Indication possible de ponction-aspiration écho-guidée à visée diagnostique et évacuatrice"
+      ],
+      "explanation": "Cette collection liquidienne pure bien circonscrite des parties molles péritrochantériennes en hypersignal T2 franc correspond à un sérome post-opératoire (ou collection enkystée) accessible à une ponction écho-guidée."
+  },
+  {
+      "id": "mail-63",
+      "title": "Cas Imagerie #63",
+      "region": "genou",
+      "modality": "IRM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-63.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du genou — analysez la cavité épiphyso-métaphysaire tibiale proximale traitée par comblement et le nodule tissulaire postérieur au contact des vaisseaux poplités.",
+      "diagnosis": "Récidive locale de tumeur à cellules géantes (TCG) du tibia proximal au contact du pédicule poplité",
+      "synonyms": [
+          "Récidive locale de tumeur à cellules géantes (TCG) du tibia proximal",
+          "Récidive de TCG tibiale proximale",
+          "Tumeur à cellules géantes (TCG) récidivante du tibia proximal"
+      ],
+      "requiredKeywords": [
+          [
+              "tumeur à cellules géantes",
+              "cellules géantes",
+              "tcg"
+          ]
+      ],
+      "distractors": [
+          "Granulome à corps étranger isolé sur ciment acrylique",
+          "Kyste poplité de Baker simple",
+          "Anévrisme de l'artère poplitée"
+      ],
+      "keySigns": [
+          "Bourgeon tissulaire ostéolytique récidivant en périphérie de la cavité de curetage-comblement épiphyso-métaphysaire du tibia proximal",
+          "Extension extra-osseuse postérieure venant au contact direct du pédicule vasculo-nerveux poplité",
+          "Signal tissulaire intermédiaire T1/T2 prenant intensément le contraste"
+      ],
+      "explanation": "L'apparition d'un nodule tissulaire ostéolytique en périphérie d'une cavité de curetage-comblement tibial proximal avec extension postérieure au contact du pédicule poplité signe une récidive locale de tumeur à cellules géantes (TCG)."
+  },
   {
       "id": "mail-01",
       "title": "Cas Imagerie #01",
