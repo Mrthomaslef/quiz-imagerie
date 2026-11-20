@@ -204,8 +204,11 @@ def main():
         if not cur.fetchall():
             continue
 
-        # Locate attachment files on disk for this ROWID
-        for att_file in MAIL_DIR.rglob(f"Attachments/{rowid}/*/*"):
+        # Locate attachment files on disk for this ROWID (1 image = 1 diagnosis per mail)
+        added_for_mail = False
+        for att_file in sorted(MAIL_DIR.glob(f"*/*/*/Data/*/*/*/Attachments/{rowid}/*/*")):
+            if added_for_mail:
+                break
             if not att_file.is_file():
                 continue
             if att_file.suffix.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
@@ -256,6 +259,7 @@ def main():
             }
             added_cases.append(new_case)
             next_num += 1
+            added_for_mail = True
             print(f"Added {cid}: {diagnosis} ({region}, {modality})")
 
     state["last_rowid"] = last_rowid

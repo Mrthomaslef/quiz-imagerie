@@ -22,6 +22,25 @@ export const MODALITIES = [
 
 // Référentiel complet de diagnostics ostéo-articulaires du Cotten (36 chapitres) + classiques pour l'autocomplétion
 export const DIAGNOSIS_DICTIONARY = [
+  "Tumeur desmoïde (fibromatose profonde) de la main",
+  "Conflit fémoro-acétabulaire (CFA) avec hernie synoviale de Pitt du col fémoral",
+  "Tumeur vasculaire ou mésenchymateuse évolutive des parties molles du bord ulnaire du poignet (malformation vasculaire / angioleiomyome)",
+  "Tumeurs bénignes des gaines des nerfs périphériques en chapelet du nerf tibial (schwannomes / schwannomatose du canal tarsien)",
+  "Géodes sous-chondrales dégénératives de la lame osseuse sous-chondrale (coxarthrose)",
+  "Ostéome ostéoïde intra-articulaire de la jonction cervico-céphalique du fémur avec synovite réactionnelle",
+  "Fissure verticale radiaire transfixiante et complexe de la corne postérieure du ménisque médial",
+  "Récidive locale de sarcome des tissus mous de la cuisse avec envahissement cortical fémoral",
+  "Infection du site opératoire (ISO) sur prothèse totale de hanche (descellement septique de PTH)",
+  "Géode sous-chondrale dégénérative du pédicule / isthme de L4 communicant avec l'articulaire postérieure (arthrose inter-apophysaire postérieure)",
+  "Tumeur ténosynoviale à cellules géantes (TTCG) nodulaire intra-articulaire talo-naviculaire",
+  "Myosite ossifiante circonscrite (MOC) des parties molles de la jambe",
+  "Localisation rachidienne lombaire (L2-L4) et épidurite compressive d'un lymphome B diffus à grandes cellules",
+  "Tumeur lipomateuse profonde intramusculaire de la cuisse (lipome profond / tumeur lipomateuse atypique - ALT)",
+  "Métastase osseuse ostéolytique du cotyle (toit acétabulaire) et de l'aile iliaque relevant d'un vissage-cimentoplastie",
+  "Lésions osseuses ostéocondensantes multiples du bassin (métastases ostéocondensantes / ostéopathie condensante secondaire)",
+  "Ostéome ostéoïde sous-périosté de la face dorsale du col du talus",
+  "Tumeur desmoïde (fibromatose profonde) des muscles paravertébraux",
+  "Ostéome ostéoïde cortical du genou",
   "Dysplasie fibreuse du fémur proximal ostéosynthésée",
   "Métastase osseuse ostéolytique de la branche ilio-pubienne avec envahissement des parties molles",
   "Tumeur ténosynoviale à cellules géantes (TTCG / synovite villonodulaire)",
@@ -161,6 +180,777 @@ export const DIAGNOSIS_DICTIONARY = [
 ];
 
 export const INITIAL_CASES = [
+  {
+      "id": "mail-64",
+      "title": "Cas Imagerie #64",
+      "region": "main-poignet",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-64.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la main et du poignet — analysez cette masse tissulaire infiltrante en franc hyposignal T2 fibreux développée au contact des plans aponévrotiques.",
+      "diagnosis": "Tumeur desmoïde (fibromatose profonde) de la main",
+      "synonyms": [
+          "Tumeur desmoïde de la main",
+          "Fibromatose profonde (desmoïde) de la main / avant-bras",
+          "Tumeur desmoïde (fibromatose agressive)"
+      ],
+      "requiredKeywords": [
+          [
+              "desmoïde",
+              "desmoide",
+              "fibromatose"
+          ]
+      ],
+      "distractors": [
+          "Schwannome bénin du nerf médian",
+          "Tumeur ténosynoviale à cellules géantes (TTCG)",
+          "Lipome profond intramusculaire"
+      ],
+      "keySigns": [
+          "Masse tissulaire des parties molles apposée contre le plan aponévrotique profond (fascia tail sign)",
+          "Plages caractéristiques en franc hyposignal T2 et T1 correspondant aux bandes riches en collagène",
+          "Rehaussement modéré à intense des portions cellulaires après injection de gadolinium"
+      ],
+      "explanation": "La présence de bandes en franc hyposignal T2 au sein d'une masse tissulaire infiltrante raccordée au fascia (« tail sign ») oriente vers une tumeur desmoïde (fibromatose profonde), à confirmer par microbiopsie écho-guidée."
+  },
+  {
+      "id": "mail-65",
+      "title": "Cas Imagerie #65",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-65.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la hanche — observez la géode sous-cortical antéro-supérieure de la jonction cervico-céphalique fémorale et l'épaississement capsulaire en regard.",
+      "diagnosis": "Conflit fémoro-acétabulaire (CFA) avec hernie synoviale de Pitt du col fémoral",
+      "synonyms": [
+          "Hernie synoviale de Pitt sur conflit fémoro-acétabulaire (CFA)",
+          "Conflit fémoro-acétabulaire (CFA) avec fibrocyste sous-cortical du col fémoral",
+          "Hernie de Pitt du col fémoral"
+      ],
+      "requiredKeywords": [
+          [
+              "conflit",
+              "cfa",
+              "pitt"
+          ],
+          [
+              "fémoro-acétabulaire",
+              "femoro-acetabulaire",
+              "hanche",
+              "col",
+              "pitt"
+          ]
+      ],
+      "distractors": [
+          "Ostéome ostéoïde du col fémoral",
+          "Synovite villonodulaire pigmentée (TTCG diffuse) de la hanche",
+          "Ostéonécrose aseptique de la tête fémorale"
+      ],
+      "keySigns": [
+          "Géode bien limitée cerclée d'un fin liseré sclérotique à la face antéro-supérieure de la jonction cervico-céphalique fémorale (hernie de Pitt)",
+          "Épaississement capsulo-synovial fibreux réactionnel focal en regard de la zone de conflit antérieur",
+          "Chondropathie mécanique du versant acétabulaire antéro-supérieur sans prolifération synoviale tumorale"
+      ],
+      "explanation": "La hernie synoviale de Pitt (fibrocyste sous-cortical du versant antéro-supérieur du col fémoral) associée à un épaississement capsulaire focal et une chondropathie acétabulaire antérieure est caractéristique d'un conflit fémoro-acétabulaire (CFA)."
+  },
+  {
+      "id": "mail-66",
+      "title": "Cas Imagerie #66",
+      "region": "main-poignet",
+      "modality": "IRM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-66.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du poignet — analysez ce nodule sous-cutané hypervasculaire évolutif très douloureux situé en regard de la tête ulnaire.",
+      "diagnosis": "Tumeur vasculaire ou mésenchymateuse évolutive des parties molles du bord ulnaire du poignet (malformation vasculaire / angioleiomyome)",
+      "synonyms": [
+          "Malformation vasculaire / tumeur vasculaire des parties molles du poignet",
+          "Tumeur mésenchymateuse hypervasculaire du poignet (angioleiomyome / MAV / sarcome superficiel)",
+          "Lésion nodulaire hypervasculaire en regard de la tête de l'ulna"
+      ],
+      "requiredKeywords": [
+          [
+              "vasculaire",
+              "mav",
+              "malformation",
+              "tumeur",
+              "angioleiomyome",
+              "sarcome"
+          ],
+          [
+              "poignet",
+              "ulna",
+              "ulnaire"
+          ]
+      ],
+      "distractors": [
+          "Kyste arthrosynovial radio-carpien dorsal simple",
+          "Ténosynovite de l'extenseur ulnaire du carpe (ECU)",
+          "Lipome sous-cutané simple du poignet"
+      ],
+      "keySigns": [
+          "Nodule bien circonscrit des parties molles superficielles en regard de la tête de l'ulna",
+          "Franc hypersignal T2, hyposignal T1 et rehaussement intense après injection de gadolinium",
+          "Absence de dépôt d'hémosidérine et respect complet de la corticale ulnaire sous-jacente"
+      ],
+      "explanation": "Devant un nodule superficiel douloureux en franc hypersignal T2 et rehaussement intense en regard de la tête ulnaire, évolutif en 3 mois et sans continuité nerveuse typique de schwannome, on évoque une lésion vasculaire (MAV / angioleiomyome) ou mésenchymateuse justifiant une biopsie-exérèse."
+  },
+  {
+      "id": "mail-67",
+      "title": "Cas Imagerie #67",
+      "region": "jambe-cheville-pied",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-67.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la cheville — analysez cette formation nodulaire disposée en chapelet sur le trajet du pédicule tibial postérieur sous la malléole médiale.",
+      "diagnosis": "Tumeurs bénignes des gaines des nerfs périphériques en chapelet du nerf tibial (schwannomes / schwannomatose du canal tarsien)",
+      "synonyms": [
+          "Schwannome du nerf tibial postérieur (canal tarsien)",
+          "Tumeur bénigne des gaines des nerfs périphériques (TBGNP / schwannomatose) de la cheville",
+          "Schwannomes plexiformes / en chapelet du nerf tibial"
+      ],
+      "requiredKeywords": [
+          [
+              "schwannome",
+              "schwannomatose",
+              "tbgnp",
+              "gaines",
+              "nerf"
+          ]
+      ],
+      "distractors": [
+          "Kyste arthrosynovial sous-talien",
+          "Ténosynovite du tibial postérieur",
+          "Varices plantaires thrombosées du canal tarsien"
+      ],
+      "keySigns": [
+          "Nodules multiples disposés en chapelet dans la gouttière rétromalléolaire médiale et le canal tarsien",
+          "Hyposignal T1, franc hypersignal STIR/T2 et prise de contraste intense après injection",
+          "Continuité anatomique avec le trajet du pédicule vasculo-nerveux tibial postérieur"
+      ],
+      "explanation": "Des nodules bien limités disposés en chapelet en hypersignal T2 prenant le contraste le long du trajet du nerf tibial sous la malléole médiale sont caractéristiques de tumeurs bénignes des gaines nerveuses périphériques (schwannomes / schwannomatose)."
+  },
+  {
+      "id": "mail-68",
+      "title": "Cas Imagerie #68",
+      "region": "hanche",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 1,
+      "image": "./figures/mails/mail-68.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM — analysez les petites clartés kystiques bien cerclées situées immédiatement sous la lame osseuse sous-chondrale.",
+      "diagnosis": "Géodes sous-chondrales dégénératives de la lame osseuse sous-chondrale (coxarthrose)",
+      "synonyms": [
+          "Géodes sous-chondrales d'arthrose",
+          "Kystes sous-chondraux dégénératifs de la lame osseuse sous-chondrale",
+          "Remaniements géodiques sous-chondraux arthrosiques"
+      ],
+      "requiredKeywords": [
+          [
+              "géode",
+              "geode",
+              "géodes",
+              "geodes",
+              "sous-chondrale",
+              "sous-chondrales",
+              "arthrose"
+          ]
+      ],
+      "distractors": [
+          "Chondroblastome épiphysaire",
+          "Métastases osseuses ostéolytiques",
+          "Ostéome ostéoïde intra-articulaire"
+      ],
+      "keySigns": [
+          "Multiples petites cavités kystiques millimétriques groupées immédiatement sous la lame osseuse sous-chondrale",
+          "Fin liseré d'ostéosclérose périphérique bien défini (Lodwick IA) et condensation sous-chondrale de voisinage",
+          "Pincement de l'interligne articulaire en zone portante"
+      ],
+      "explanation": "Ces lésions kystiques bien cerclées de sclérose, strictement sous-chondrales en zone de hyperpression articulaire, correspondent à de banales géodes sous-chondrales dégénératives."
+  },
+  {
+      "id": "mail-69",
+      "title": "Cas Imagerie #69",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-69.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la hanche — recherchez un petit nidus cortical de la jonction cervico-céphalique associé à un œdème osseux et une synovite réactionnelle.",
+      "diagnosis": "Ostéome ostéoïde intra-articulaire de la jonction cervico-céphalique du fémur avec synovite réactionnelle",
+      "synonyms": [
+          "Ostéome ostéoïde du col fémoral",
+          "Ostéome ostéoïde intra-capsulaire de la hanche",
+          "Ostéome ostéoïde cervico-céphalique fémoral"
+      ],
+      "requiredKeywords": [
+          [
+              "ostéome",
+              "osteome",
+              "ostéoïde",
+              "osteoide"
+          ]
+      ],
+      "distractors": [
+          "Fracture de fatigue du col fémoral",
+          "Arthrite septique coxofémorale",
+          "Hernie synoviale de Pitt"
+      ],
+      "keySigns": [
+          "Nidus millimétrique sous-périosté/cortical de la jonction cervico-céphalique fémorale",
+          "Œdème médullaire étendu du col fémoral en franc hypersignal T2 Fat-Sat",
+          "Épanchement intra-articulaire et synovite inflammatoire réactionnelle marquée typiques des localisations intra-capsulaires"
+      ],
+      "explanation": "L'ostéome ostéoïde intra-capsulaire du col fémoral provoque une synovite réactionnelle floride et un œdème médullaire extensif pouvant mimer une coxite inflammatoire ; le scanner haute résolution et l'IRM dynamique mettent en évidence le nidus hypervasculaire accessible à la radiofréquence."
+  },
+  {
+      "id": "mail-70",
+      "title": "Cas Imagerie #70",
+      "region": "genou",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-70.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du genou — analysez la continuité de la corne postérieure et de la jonction corps-corne postérieure du ménisque médial ainsi que l'œdème capsulaire adjacent.",
+      "diagnosis": "Fissure verticale radiaire transfixiante et complexe de la corne postérieure du ménisque médial",
+      "synonyms": [
+          "Fissure radiaire transfixiante de la corne postérieure du ménisque médial",
+          "Rupture complexe de la corne postérieure du ménisque interne",
+          "Lésion méniscale médiale complexe (fissure radiaire de la corne postérieure)"
+      ],
+      "requiredKeywords": [
+          [
+              "ménisque",
+              "menisque",
+              "méniscale",
+              "meniscale"
+          ],
+          [
+              "fissure",
+              "rupture",
+              "radiaire",
+              "corne postérieure",
+              "médial",
+              "medial",
+              "interne"
+          ]
+      ],
+      "distractors": [
+          "Ménisque discoïde latéral",
+          "Kyste méniscal isolé sans fissure",
+          "Ostéochondrite disséquante du condyle fémoral médial"
+      ],
+      "keySigns": [
+          "Trait de refend vertical radiaire transfixiant interrompant le bord libre et le segment postérieur du ménisque médial",
+          "Extension fissuraire complexe à la jonction segment moyen - segment postérieur",
+          "Œdème capsulaire et paraméniscal réactionnel sur la zone de réflexion de la base méniscale"
+      ],
+      "explanation": "L'interruption verticale franche en hypersignal T2 de la corne postérieure du ménisque médial associée à une composante complexe de la jonction segment moyen-postérieur et un œdème capsulaire adjacent signe une fissure radiaire transfixiante instable."
+  },
+  {
+      "id": "mail-71",
+      "title": "Cas Imagerie #71",
+      "region": "hanche",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-71.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM fémorale — analysez l'atteinte corticale fémorale au contact d'un site antérieur d'exérèse de sarcome des parties molles.",
+      "diagnosis": "Récidive locale de sarcome des tissus mous de la cuisse avec envahissement cortical fémoral",
+      "synonyms": [
+          "Envahissement cortical fémoral sur récidive de sarcome des tissus mous",
+          "Récidive de sarcome des parties molles avec ostéolyse corticale fémorale",
+          "Atteinte osseuse corticale fémorale de contiguïté sur sarcome des parties molles"
+      ],
+      "requiredKeywords": [
+          [
+              "sarcome",
+              "récidive",
+              "recidive",
+              "envahissement",
+              "ostéolyse"
+          ],
+          [
+              "corticale",
+              "fémur",
+              "femur",
+              "fémorale",
+              "cuisse"
+          ]
+      ],
+      "distractors": [
+          "Ostéome ostéoïde cortical diaphysaire fémoral",
+          "Dysplasie fibreuse corticale",
+          "Myosite ossifiante circonscrite mature"
+      ],
+      "keySigns": [
+          "Érosion et ostéolyse irrégulière de la corticale diaphysaire fémorale à proximité immédiate du lit opératoire",
+          "Épaississement tissulaire juxta-cortical infiltrant les parties molles profondes adjacentes",
+          "Indication de biopsie osseuse et tissulaire sous contrôle TDM"
+      ],
+      "explanation": "L'apparition d'une érosion ostéolytique corticale fémorale en regard de la cicatrice d'exérèse d'un sarcome des parties molles fait craindre une récidive locale avec envahissement osseux de contiguïté (ou une ostéite/ostéoradionécrose), imposant une biopsie sous scanner."
+  },
+  {
+      "id": "mail-72",
+      "title": "Cas Imagerie #72",
+      "region": "hanche",
+      "modality": "Radiographie",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-72.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "Radiographie de hanche prothétique — analysez l'interface os-implant fémoral et la réaction périostée chez ce patient jeune douloureux.",
+      "diagnosis": "Infection du site opératoire (ISO) sur prothèse totale de hanche (descellement septique de PTH)",
+      "synonyms": [
+          "Infection sur prothèse totale de hanche (ISO PTH)",
+          "Descellement septique de prothèse totale de hanche (PTH)",
+          "Sepsis sur prothèse totale de hanche"
+      ],
+      "requiredKeywords": [
+          [
+              "infection",
+              "septique",
+              "sepsis",
+              "iso",
+              "descellement"
+          ],
+          [
+              "prothèse",
+              "prothese",
+              "pth",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Fracture péri-prothétique Vancouver B1",
+          "Luxation postérieure de prothèse totale de hanche",
+          "Ossifications hétérotopiques péri-prothétiques de Brooker"
+      ],
+      "keySigns": [
+          "Liseré radiotransparent péri-prothétique évolutif et ostéolyse endostée autour de la tige fémorale",
+          "Réaction périostée appositionnelle fémorale suspecte de processus septique",
+          "Indication de ponction articulaire radio- ou scanno-guidée avant reprise chirurgicale"
+      ],
+      "explanation": "Devant des remaniements ostéolytiques péri-prothétiques précoces avec réaction périostée sur une prothèse totale de hanche douloureuse, une infection péri-prothétique (ISO sur PTH) doit être recherchée en priorité par ponction articulaire guidée et scanner."
+  },
+  {
+      "id": "mail-73",
+      "title": "Cas Imagerie #73",
+      "region": "rachis",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-73.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM lombaire en coupe axiale sur L4 — observez la continuité entre la lacune bien cerclée de l'isthme/pédicule droit et l'interligne articulaire postérieur.",
+      "diagnosis": "Géode sous-chondrale dégénérative du pédicule / isthme de L4 communicant avec l'articulaire postérieure (arthrose inter-apophysaire postérieure)",
+      "synonyms": [
+          "Géode dégénérative d'arthrose inter-apophysaire postérieure (IAP) de L4",
+          "Kyste sous-chondral mécanique du pédicule / massif articulaire de L4",
+          "Lacune mécanique d'origine articulaire postérieure (IAP) du pédicule de L4"
+      ],
+      "requiredKeywords": [
+          [
+              "géode",
+              "geode",
+              "mécanique",
+              "mecanique",
+              "arthrose",
+              "iap",
+              "articulaire postérieure",
+              "kyste"
+          ],
+          [
+              "pédicule",
+              "pedicule",
+              "l4",
+              "rachis",
+              "lombaire",
+              "iap"
+          ]
+      ],
+      "distractors": [
+          "Métastase ostéolytique du pédicule de L4 (« vertèbre borgne »)",
+          "Ostéoblastome de l'arc postérieur de L4",
+          "Spondylodiscite infectieuse L4-L5"
+      ],
+      "keySigns": [
+          "Lacune arrondie bien limitée de la base du massif articulaire et du pédicule droit de L4 bordée d'un liseré dense d'ostéosclérose",
+          "Pertuis de communication direct avec l'interligne inter-apophysaire postérieur (IAP) siège d'une arthrose",
+          "Absence d'effraction corticale agressive ou d'envahissement épidural"
+      ],
+      "explanation": "La mise en évidence d'un pertuis de communication directe avec une articulation inter-apophysaire postérieure (IAP) dégénérative et d'un liseré d'ostéosclérose continu permet d'affirmer l'origine mécanique synoviale (géode d'arthrose IAP) et d'écarter une métastase pédiculaire."
+  },
+  {
+      "id": "mail-74",
+      "title": "Cas Imagerie #74",
+      "region": "jambe-cheville-pied",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-74.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM du médio-pied — analysez ce nodule tissulaire intra-articulaire bien circonscrit développé sur le versant médial de l'articulation talo-naviculaire.",
+      "diagnosis": "Tumeur ténosynoviale à cellules géantes (TTCG) nodulaire intra-articulaire talo-naviculaire",
+      "synonyms": [
+          "Tumeur ténosynoviale à cellules géantes (TTCG) talo-naviculaire",
+          "Synovite villonodulaire nodulaire de l'articulation talo-naviculaire",
+          "TTCG localisée de la cheville / médio-pied"
+      ],
+      "requiredKeywords": [
+          [
+              "ténosynoviale",
+              "tenosynoviale",
+              "ttcg",
+              "villonodulaire",
+              "svn",
+              "cellules géantes"
+          ]
+      ],
+      "distractors": [
+          "Kyste arthrosynovial dorsal du médio-pied",
+          "Os naviculaire accessoire symptomatique (type II)",
+          "Lipome intra-osseux du talus"
+      ],
+      "keySigns": [
+          "Nodule tissulaire intra-articulaire bien circonscrit de 26 mm sur le versant médial de l'articulation talo-naviculaire",
+          "Signal T2 intermédiaire modéré associé à une synovite talo-naviculaire réactionnelle",
+          "Accessibilité à une microbiopsie écho-guidée de confirmation"
+      ],
+      "explanation": "Un nodule synovial intra-articulaire solide bien limité en signal T2 intermédiaire développé dans l'articulation talo-naviculaire évoque en première hypothèse une forme localisée (nodulaire) de tumeur ténosynoviale à cellules géantes (TTCG)."
+  },
+  {
+      "id": "mail-75",
+      "title": "Cas Imagerie #75",
+      "region": "jambe-cheville-pied",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-75.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM et IRM de la jambe — observez la couronne périphérique ossifiée mature entourant un centre plus clair au sein des parties molles musculaires.",
+      "diagnosis": "Myosite ossifiante circonscrite (MOC) des parties molles de la jambe",
+      "synonyms": [
+          "Myosite ossifiante circonscrite (MOC)",
+          "Myosite ossifiante bénigne de la jambe",
+          "Ossification hétérotopique intramusculaire (MOC)"
+      ],
+      "requiredKeywords": [
+          [
+              "myosite",
+              "moc"
+          ],
+          [
+              "ossifiante",
+              "circonscrite",
+              "moc"
+          ]
+      ],
+      "distractors": [
+          "Ostéosarcome extra-squelettique des parties molles",
+          "Synovialosarcome calcifié de la jambe",
+          "Chondrosarcome mésenchymateux des tissus mous"
+      ],
+      "keySigns": [
+          "Phénomène de zonation centripète pathognomonique avec couronne d'ossification périphérique mature bien cortiquée et centre fibro-cellulaire moins dense",
+          "Liseré clair de clivage séparant la masse ossifiée de la corticale osseuse adjacente intacte",
+          "Maturation osseuse progressive et régression de l'œdème périlésionnel sur le suivi évolutif (« Don't touch lesion »)"
+      ],
+      "explanation": "La maturation osseuse centripète (couronne périphérique calcifiée dense entourant un centre hypodense) est pathognomonique de la myosite ossifiante circonscrite (MOC) : c'est une « Don't touch lesion » qui ne doit pas être biopsiée."
+  },
+  {
+      "id": "mail-76",
+      "title": "Cas Imagerie #76",
+      "region": "rachis",
+      "modality": "IRM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-76.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM lombaire — analysez l'infiltration osseuse vertébrale de L2 à L4 et l'envahissement tissulaire circonférentiel de l'espace épidural rétrécissant le fourreau dural.",
+      "diagnosis": "Localisation rachidienne lombaire (L2-L4) et épidurite compressive d'un lymphome B diffus à grandes cellules",
+      "synonyms": [
+          "Lymphome vertébral lombaire avec épidurite (L2-L4)",
+          "Épidurite lymphomateuse lombaire (lymphome B à grandes cellules)",
+          "Infiltration rachidienne et épidurale de lymphome malin non hodgkinien"
+      ],
+      "requiredKeywords": [
+          [
+              "lymphome",
+              "épidurite",
+              "epidurite",
+              "hématologique",
+              "secondaire"
+          ],
+          [
+              "lombaire",
+              "rachis",
+              "épidurite",
+              "epidurite",
+              "vertébrale"
+          ]
+      ],
+      "distractors": [
+          "Hernie discale lombaire exclue L3-L4",
+          "Lipomatose épidurale lombaire bénigne",
+          "Canal lombaire étroit dégénératif"
+      ],
+      "keySigns": [
+          "Remplacement diffus du signal médullaire des corps vertébraux de L2 à L4 sans effondrement vertébral majeur",
+          "Manchon tissulaire épidural homogène infiltrant le canal rachidien lombaire et engainant le fourreau dural",
+          "Extension foramוnale et paravertébrale en continuité à travers les foramens intervertébraux (« signe de l'enveloppement »)"
+      ],
+      "explanation": "Une infiltration médullaire vertébrale pluri-étagée (L2-L4) à corticales relativement conservées associée à une volumineuse épidurite en nappe engainant le sac dural est typique d'une localisation rachidienne et épidurale de lymphome B à grandes cellules."
+  },
+  {
+      "id": "mail-77",
+      "title": "Cas Imagerie #77",
+      "region": "hanche",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-77.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la cuisse — analysez cette volumineuse masse profonde de 20 cm de signal purement graisseux sans septum épais ni nodule charnu.",
+      "diagnosis": "Tumeur lipomateuse profonde intramusculaire de la cuisse (lipome profond / tumeur lipomateuse atypique - ALT)",
+      "synonyms": [
+          "Lipome profond intramusculaire / tumeur lipomateuse atypique (ALT)",
+          "Tumeur lipomateuse profonde de grande taille (> 10 cm)",
+          "Liposarcome bien différencié (ALT) / lipome profond de la cuisse"
+      ],
+      "requiredKeywords": [
+          [
+              "lipome",
+              "lipomateuse",
+              "alt",
+              "liposarcome"
+          ],
+          [
+              "profond",
+              "profonde",
+              "intramusculaire",
+              "atypique",
+              "cuisse"
+          ]
+      ],
+      "distractors": [
+          "Liposarcome dédifférencié de haut grade",
+          "Liposarcome myxoïde",
+          "Hématome intramusculaire ancien de la cuisse"
+      ],
+      "keySigns": [
+          "Masse lipomateuse profonde sous-aponévrotique de grand axe > 10 cm (20 cm)",
+          "Signal identique à la graisse sous-cutanée sur toutes les séquences avec saturation complète du signal en Fat-Sat",
+          "Absence de cloison épaisse (> 2 mm) ou de portion nodulaire charnue non adipeuse, mais taille > 10 cm et siège profond imposant la recherche d'amplification MDM2"
+      ],
+      "explanation": "Toute tumeur lipomateuse profonde (sous le fascia superficiel) et de grand axe > 10 cm (ici 20 cm), même d'aspect purement graisseux sans cloison épaisse ni nodule charnu, doit faire discuter un lipome profond vs une tumeur lipomateuse atypique (ALT / MDM2+)."
+  },
+  {
+      "id": "mail-78",
+      "title": "Cas Imagerie #78",
+      "region": "hanche",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-78.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM du bassin — analysez la vaste ostéolyse du toit acétabulaire et de l'aile iliaque et la discussion de renforcement par vissage-cimentoplastie.",
+      "diagnosis": "Métastase osseuse ostéolytique du cotyle (toit acétabulaire) et de l'aile iliaque relevant d'un vissage-cimentoplastie",
+      "synonyms": [
+          "Métastase ostéolytique du cotyle et de l'aile iliaque",
+          "Lésion secondaire ostéolytique acétabulaire à haut risque fracturaire",
+          "Ostéolyse maligne du toit du cotyle (indication de cimentoplastie / ostéosynthèse percutanée)"
+      ],
+      "requiredKeywords": [
+          [
+              "métastase",
+              "metastase",
+              "secondaire",
+              "ostéolyse"
+          ],
+          [
+              "cotyle",
+              "acétabulaire",
+              "acetabulaire",
+              "iliaque",
+              "bassin",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Kyste synovial acétabulaire dégénératif",
+          "Dysplasie fibreuse de l'os iliaque",
+          "Ostéonécrose aseptique de la tête fémorale"
+      ],
+      "keySigns": [
+          "Vaste ostéolyse destructrice de la colonne antérieure/toit du cotyle et de l'aile iliaque avec rupture corticale",
+          "Haut risque d'impaction céphalique et de fracture pathologique en zone portante acétabulaire",
+          "Indication de consolidation percutanée combinée (vis ancrée dans l'os iliaque sain postérieur + cimentoplastie du toit acétabulaire) articulée avec la radiothérapie"
+      ],
+      "explanation": "L'ostéolyse métastatique étendue du toit acétabulaire expose à un risque élevé de protrusion acétabulaire mécanique, justifiant une consolidation par radiologie interventionnelle (vissage ilio-acétabulaire ancré en os sain postérieur associé à une cimentoplastie)."
+  },
+  {
+      "id": "mail-79",
+      "title": "Cas Imagerie #79",
+      "region": "hanche",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 3,
+      "image": "./figures/mails/mail-79.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM du bassin en fenêtre osseuse — analysez les multiples plages d'ostéocondensation médullaire iliaques bilatérales en majoration progressive.",
+      "diagnosis": "Lésions osseuses ostéocondensantes multiples du bassin (métastases ostéocondensantes / ostéopathie condensante secondaire)",
+      "synonyms": [
+          "Lésions osseuses ostéocondensantes iliaques bilatérales (métastases condensantes / lymphome / ostéodystrophie)",
+          "Métastases osseuses ostéocondensantes du bassin",
+          "Ostéocondensations iliaques multiples évolutives"
+      ],
+      "requiredKeywords": [
+          [
+              "condensante",
+              "condensantes",
+              "ostéocondensation",
+              "ostéocondensantes",
+              "métastase",
+              "métastases"
+          ],
+          [
+              "bassin",
+              "iliaque",
+              "iliaques",
+              "hanche"
+          ]
+      ],
+      "distractors": [
+          "Ostéose iliaque condensante bénigne du post-partum",
+          "Énostose solitaire bénigne",
+          "Sacro-iliite ankylosante bilatérale"
+      ],
+      "keySigns": [
+          "Foyers multiples d'ostéocondensation médullaire nodulaires et confluents disséminés dans les deux os iliaques",
+          "Caractère évolutif (majoration en taille et en nombre sur les scanners successifs)",
+          "Indication de caractérisation complémentaire par IRM médullaire et TEP-TDM"
+      ],
+      "explanation": "Des plages d'ostéocondensation médullaire iliaques multiples et évolutives dans le temps ne doivent pas être banalisées en simples îlots condensants ni en ostéose iliaque condensante, et imposent un bilan par IRM et TEP-scanner (métastases condensantes, hémopathie ou ostéodystrophie rénale)."
+  },
+  {
+      "id": "mail-80",
+      "title": "Cas Imagerie #80",
+      "region": "jambe-cheville-pied",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-80.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM de la cheville — analysez la petite lésion corticale dorsale du col du talus entourée d'un œdème osseux talien et d'une réaction capsulaire antérieure.",
+      "diagnosis": "Ostéome ostéoïde sous-périosté de la face dorsale du col du talus",
+      "synonyms": [
+          "Ostéome ostéoïde du col du talus (astragale)",
+          "Ostéome ostéoïde sous-périosté / juxta-articulaire du talus",
+          "Ostéome ostéoïde de la cheville (col du talus)"
+      ],
+      "requiredKeywords": [
+          [
+              "ostéome",
+              "osteome",
+              "ostéoïde",
+              "osteoide"
+          ]
+      ],
+      "distractors": [
+          "Conflit antérieur osseux simple de cheville",
+          "Ostéochondrite disséquante du dôme talien",
+          "Fracture de fatigue du col du talus"
+      ],
+      "keySigns": [
+          "Petit nidus finement cerclé sur le versant dorsal sous-périosté du col du talus",
+          "Œdème médullaire réactionnel du col du talus et épaississement inflammatoire capsulo-synovial du récessus antérieur de la cheville",
+          "Rehaussement artériel précoce du nidus en IRM dynamique confirmant l'indication de thermoablation par radiofréquence sous TDM"
+      ],
+      "explanation": "Le col du talus est la localisation préférentielle de l'ostéome ostéoïde au pied : sa topographie intra-capsulaire engendre une synovite du récessus antérieur pouvant mimer un conflit antérieur de cheville, redressée par l'IRM dynamique."
+  },
+  {
+      "id": "mail-81",
+      "title": "Cas Imagerie #81",
+      "region": "rachis",
+      "modality": "IRM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-81.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "IRM rachidienne — analysez cette masse tissulaire infiltrante bien limitée développée dans la loge musculaire paravertébrale gauche.",
+      "diagnosis": "Tumeur desmoïde (fibromatose profonde) des muscles paravertébraux",
+      "synonyms": [
+          "Tumeur desmoïde paravertébrale",
+          "Fibromatose profonde (desmoïde) paravertébrale",
+          "Tumeur desmoïde des parties molles du dos / rachis"
+      ],
+      "requiredKeywords": [
+          [
+              "desmoïde",
+              "desmoide",
+              "fibromatose"
+          ]
+      ],
+      "distractors": [
+          "Schwannome foraminal lombaire",
+          "Abcès paravertébral du psoas / érecteurs du rachis",
+          "Hématome intramusculaire paravertébral"
+      ],
+      "keySigns": [
+          "Masse tissulaire fusiforme infiltrant la loge musculaire paravertébrale gauche le long des plans aponévrotiques",
+          "Signal hétérogène associant des plages cellulaires rehaussées et des bandes fibreuses hypo-intenses en T2",
+          "Indication de microbiopsie percutanée radioguidée (prise en charge non chirurgicale de première intention)"
+      ],
+      "explanation": "Une masse fusiforme indolore des muscles paravertébraux infiltrant les fascias avec bandes fibreuses en hyposignal T2 évoque une tumeur desmoïde (fibromatose profonde), dont la confirmation repose sur la microbiopsie percutanée (la chirurgie n'étant plus le traitement de première intention)."
+  },
+  {
+      "id": "mail-82",
+      "title": "Cas Imagerie #82",
+      "region": "genou",
+      "modality": "Arthroscanner / TDM",
+      "difficulty": 2,
+      "image": "./figures/mails/mail-82.jpg",
+      "clinicalContext": "",
+      "questionPrompt": "Quel est votre diagnostic sur cette imagerie ?",
+      "hint": "TDM du genou en coupe coronale et axiale — analysez cette petite lacune intracorticale ronde contenant une calcification centrale et entourée d'une ostéosclérose réactionnelle.",
+      "diagnosis": "Ostéome ostéoïde cortical du genou",
+      "synonyms": [
+          "Ostéome ostéoïde du tibia proximal / fémur distal",
+          "Ostéome ostéoïde cortical du genou",
+          "Ostéome ostéoïde"
+      ],
+      "requiredKeywords": [
+          [
+              "ostéome",
+              "osteome",
+              "ostéoïde",
+              "osteoide"
+          ]
+      ],
+      "distractors": [
+          "Abcès central osseux de Brodie",
+          "Fracture de fatigue corticale longitudinale",
+          "Énostose (îlot condensant bénin)"
+      ],
+      "keySigns": [
+          "Nidus radiotransparent intracortical arrondi de moins de 15 mm finement délimité",
+          "Calcification centrale dense en « cocarde » au sein du nidus",
+          "Épaississement cortical et ostéosclérose réactionnelle périlésionnelle"
+      ],
+      "explanation": "L'image TDM en cocarde — petite lacune intracorticale bien limitée centrée par un point calcifié dense et entourée d'une ostéocondensation corticale réactionnelle — est caractéristique d'un ostéome ostéoïde."
+  },
   {
       "id": "mail-47",
       "title": "Cas Imagerie #47",
